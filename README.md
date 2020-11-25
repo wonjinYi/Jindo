@@ -1,2 +1,7 @@
 # Jindo
-wonJin : extremely minimized to-do web app
+won"Jin" to-"do" app :" extremely minimized to-do web app to learn about
+
+* mysql
+* sequelize
+* Oauth
+* styled-component
