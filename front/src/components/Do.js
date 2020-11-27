@@ -1,11 +1,16 @@
 import React from "react";
+import styled from "styled-components";
 
+const DoWrap = styled.div`
+
+    `;
 class Do extends React.Component {
+
     render() {
         return (
-            <div className="Do">
+            <DoWrap className="Do">
                 <p>dodododo</p>
-            </div>
+            </DoWrap>
         );
     }
 }
