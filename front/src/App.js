@@ -6,13 +6,45 @@ import styled from "styled-components";
 import Do from "./components/Do";
 import DoMaker from "./components/DoMaker";
 
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  background: pink;
-  color: white;
+// styled components
+const AppWrap = styled.div`
+  display : flex;
+  flex-direction : column;
+  align-items : center;
+
+  height : 100vh;
+
+  background : #ffd57e;
   `;
 
+const Title = styled.h1`
+  font-size: 5em;
+  text-align: center;
+
+  padding : 20px;
+  border-radius : 5px;
+  background: #fca652;
+  color: #ac4b1c;
+  `;
+
+const DoContainer = styled.div`
+  display : flex;
+  flex-direction : column;
+  justify-contents : center;
+
+  padding : 10px;
+  margin : 30px 0; 
+  border-radius : 5px;
+
+  background : #ffefa0;
+  `;
+
+const Credit = styled.p`
+  font-size : 1em;
+  color : #fca652;
+  `;
+
+// 'App' COMPONENT
 class App extends React.Component {
   
   componentDidMount() {
@@ -22,22 +54,23 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <AppWrap className="App">
 
         <header className="App-header">
           <Title className="title">Jindo</Title>
         </header>
 
         <content>
-          <p>아 lnx 적분하고싶다</p>
           <DoMaker />
-          <Do />
+          <DoContainer>
+            <Do />
+          </DoContainer>
         </content>
 
         <footer>
-          <p>푸터 영역</p>
+          <Credit>Wonjin Yi</Credit>
         </footer>
-      </div>
+      </AppWrap>
     );
   }
 }
