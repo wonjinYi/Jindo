@@ -28,28 +28,28 @@ const BrownBorderTextField  = withStyles({
     },
   })(TextField);
 
-  const DooButton = withStyles({
-    root: {
+const DooButton = withStyles({
+  root: {
+    boxShadow: 'none',
+    textTransform: 'none',
+    fontSize: '1.5em',
+    padding: '6px 0',
+    border: 'none',
+    lineHeight: 1.5,
+    color : 'white',
+    backgroundColor: '#fca652',
+    '&:hover': {
+      backgroundColor: '#e0944a',
+      //borderColor: '#0062cc',
       boxShadow: 'none',
-      textTransform: 'none',
-      fontSize: '1.5em',
-      padding: '6px 0',
-      border: 'none',
-      lineHeight: 1.5,
-      color : 'white',
-      backgroundColor: '#fca652',
-      '&:hover': {
-        backgroundColor: '#e0944a',
-        //borderColor: '#0062cc',
-        boxShadow: 'none',
-      },
-      '&:active': {
-        boxShadow: 'none',
-        backgroundColor: '#e0944a',
-        //borderColor: '#005cbf',
-      },
     },
-  })(Button);
+    '&:active': {
+      boxShadow: 'none',
+      backgroundColor: '#e0944a',
+      //borderColor: '#005cbf',
+    },
+  },
+})(Button);
 
 //styled-component.
 const DoMakerWrap = styled.div`
