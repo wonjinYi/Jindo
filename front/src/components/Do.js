@@ -1,16 +1,25 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, IconButton, withStyles } from "@material-ui/core";
+import { Button, withStyles } from "@material-ui/core";
 
 export default class Do extends React.Component {
+
+    state = {
+        giveModalInfo : () => {
+            console.log(this.props.setModalInfo);
+            const { name, content } = this.props;
+            this.props.setModalInfo(name, content);
+        }
+    }
     
+
     render() {
         const { name, content } = this.props;
 
         return (
             <DoWrap className="Do">
                 <DoName>{ name }</DoName>
-                <DoContent variant="outlined">{ 
+                <DoContent variant="outlined" onClick={this.state.giveModalInfo}>{ 
                     (content.length < 30)
                         ? content
                         : content.slice(0,30)+ "..."
@@ -28,19 +37,19 @@ const DoWrap = styled.div`
 
 const DoName = withStyles({
     root: {
-      textTransform: 'none',
-      margin: '5px',
-      border: 'none',
-      padding: '5px',
-
-      color : '#4a4a4a',
-      backgroundColor: '#FFD57E',
-      '&:hover': {
-        backgroundColor: '#e3bc6b',
-      },
-      '&:active': {
-        backgroundColor: '#e3bc6b',
-      },
+        textTransform: 'none',
+        margin: '5px',
+        border: 'none',
+        padding: '5px',
+        fontWeight : 'bold',
+        color : '#4a4a4a',
+        backgroundColor: '#FFD57E',
+        '&:hover': {
+            backgroundColor: '#e3bc6b',
+        },
+        '&:active': {
+            backgroundColor: '#e3bc6b',
+        },
     },
 })(Button);
 
