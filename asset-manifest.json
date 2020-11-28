@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/Jindo/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/Jindo/static/js/main.51af43a7.chunk.js",
-    "main.js.map": "/Jindo/static/js/main.51af43a7.chunk.js.map",
+    "main.css": "/Jindo/static/css/main.e34190aa.chunk.css",
+    "main.js": "/Jindo/static/js/main.0a6ad5ad.chunk.js",
+    "main.js.map": "/Jindo/static/js/main.0a6ad5ad.chunk.js.map",
     "runtime-main.js": "/Jindo/static/js/runtime-main.3191294b.js",
     "runtime-main.js.map": "/Jindo/static/js/runtime-main.3191294b.js.map",
-    "static/js/2.c7bf7a68.chunk.js": "/Jindo/static/js/2.c7bf7a68.chunk.js",
-    "static/js/2.c7bf7a68.chunk.js.map": "/Jindo/static/js/2.c7bf7a68.chunk.js.map",
+    "static/js/2.fcf1583f.chunk.js": "/Jindo/static/js/2.fcf1583f.chunk.js",
+    "static/js/2.fcf1583f.chunk.js.map": "/Jindo/static/js/2.fcf1583f.chunk.js.map",
     "index.html": "/Jindo/index.html",
-    "static/css/main.6dea0f05.chunk.css.map": "/Jindo/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.c7bf7a68.chunk.js.LICENSE.txt": "/Jindo/static/js/2.c7bf7a68.chunk.js.LICENSE.txt"
+    "static/css/main.e34190aa.chunk.css.map": "/Jindo/static/css/main.e34190aa.chunk.css.map",
+    "static/js/2.fcf1583f.chunk.js.LICENSE.txt": "/Jindo/static/js/2.fcf1583f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.3191294b.js",
-    "static/js/2.c7bf7a68.chunk.js",
-    "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.51af43a7.chunk.js"
+    "static/js/2.fcf1583f.chunk.js",
+    "static/css/main.e34190aa.chunk.css",
+    "static/js/main.0a6ad5ad.chunk.js"
   ]
 }
