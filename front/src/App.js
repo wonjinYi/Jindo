@@ -5,16 +5,71 @@ import styled from "styled-components";
 // components
 import Do from "./components/Do";
 import DoMaker from "./components/DoMaker";
+import DoModal from "./components/DoModal";
+
+// 'App' COMPONENT
+export default class App extends React.Component {
+  
+  state = {
+    modalName : '',
+    modalContent : '',
+    modalOpened : false,
+
+    doList : [
+      {"name":"wonjin", "content":"테스트입니다테스트스트"},
+      {"name":"wonjin", "content":"testtttetetsetsetsetset"},
+      {"name":"좀 긴 이름임니다", "content":"긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차"},
+      {"name":"wonjin", "content":"오후5시에 해킹"},
+    ],
+  };
+
+  handleOpen = (name, content) => {
+    this.setState(prevState=>({
+      modalName : name,
+      modalContent : content,
+      modalOpened : true,
+    }));
+  };
+
+  handleClose = () => {
+    this.setState(prevState=>({
+      modalOpened: false
+    }));
+  };
+
+  componentDidMount() {
+
+  }
+
+
+  render() {
+    const { doList, modalName, modalContent,  modalOpened } = this.state;
+
+    return (
+      <AppWrap className="App">
+        <Title className="title">Jindo</Title>
+
+        <DoMaker />
+
+        <DoContainer>{ 
+          doList.map( (el) => (
+              <Do setModalInfo={this.handleOpen} name={el.name} content={el.content} />
+          )) 
+        }</DoContainer>
+
+        <DoModal modalOpened={modalOpened} handleClose={this.handleClose} name={modalName} content={modalContent} />
+
+        <Credit>Wonjin Yi</Credit>
+      </AppWrap>
+    );
+  }
+}
 
 // styled components
 const AppWrap = styled.div`
   display : flex;
   flex-direction : column;
   align-items : center;
-
-  height : 100vh;
-
-  background : #ffd57e;
   `;
 
 const Title = styled.h1`
@@ -31,6 +86,7 @@ const DoContainer = styled.div`
   display : flex;
   flex-direction : column;
   justify-contents : center;
+  max-width : 50%;
 
   padding : 10px;
   margin : 30px 0; 
@@ -44,35 +100,3 @@ const Credit = styled.p`
   color : #fca652;
   `;
 
-// 'App' COMPONENT
-class App extends React.Component {
-  
-  componentDidMount() {
-
-  }
-
-
-  render() {
-    return (
-      <AppWrap className="App">
-
-        <header className="App-header">
-          <Title className="title">Jindo</Title>
-        </header>
-
-        <content>
-          <DoMaker />
-          <DoContainer>
-            <Do />
-          </DoContainer>
-        </content>
-
-        <footer>
-          <Credit>Wonjin Yi</Credit>
-        </footer>
-      </AppWrap>
-    );
-  }
-}
-
-export default App;
