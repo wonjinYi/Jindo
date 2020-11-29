@@ -12,6 +12,7 @@ import DoModal from "./components/DoModal";
 export default class App extends React.Component {
   
   state = {
+    modalId : 0,
     modalName : '',
     modalContent : '',
     modalOpened : false,
@@ -26,12 +27,14 @@ export default class App extends React.Component {
     doList : [],
   };
 
-  handleOpen = (name, content) => {
+  handleOpen = (id, name, content) => {
     this.setState(prevState=>({
+      modalId : id,
       modalName : name,
       modalContent : content,
       modalOpened : true,
     }));
+    console.log(id, name, content);
   };
 
   handleClose = () => {
@@ -66,7 +69,7 @@ export default class App extends React.Component {
           ( () => {
             const children = [];
             for(let i=0; i<doList.length; i++){
-              children.push( <Do key={i} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} /> );
+              children.push( <Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} /> );
             }
             return children;
           })()
