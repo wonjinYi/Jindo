@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
+const url = require('url');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -33,7 +34,29 @@ app.get("/data", (req, res, next) => {
     console.log("하이하이 접속했음");
     res.header("Access-Control-Allow-Origin", "*");
     res.json(doList);
-    console.log(doList);
+});
+
+app.options('/create', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 
+    'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.send();
+});
+
+app.post("/create", (req, res, next) => {
+    const {data} = doList
+    console.log("create route");
+    console.log("------------------");
+    console.log(req.body);
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    data.push({
+        "id":data.length,
+        "name":req.body.name,
+        "content":req.body.content,
+    })
+    res.json(req.body);
 });
 
 // Catch Error
