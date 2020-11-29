@@ -32,7 +32,6 @@ export default class App extends React.Component {
       modalContent : content,
       modalOpened : true,
     }));
-    this.getData();
   };
 
   handleClose = () => {
