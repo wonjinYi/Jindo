@@ -1,6 +1,7 @@
 // library, frameworks.
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 // components
 import Do from "./components/Do";
@@ -15,12 +16,14 @@ export default class App extends React.Component {
     modalContent : '',
     modalOpened : false,
 
-    doList : [
-      {"name":"wonjin", "content":"테스트입니다테스트스트"},
-      {"name":"wonjin", "content":"testtttetetsetsetsetset"},
-      {"name":"좀 긴 이름임니다", "content":"긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차"},
-      {"name":"wonjin", "content":"오후5시에 해킹"},
-    ],
+    // doList : [
+    //   {"name":"wonjin", "content":"테스트입니다테스트스트"},
+    //   {"name":"wonjin", "content":"testtttetetsetsetsetset"},
+    //   {"name":"좀 긴 이름임니다", "content":"긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차"},
+    //   {"name":"wonjin", "content":"오후5시에 해킹"},
+    // ],
+
+    doList : [],
   };
 
   handleOpen = (name, content) => {
@@ -29,6 +32,7 @@ export default class App extends React.Component {
       modalContent : content,
       modalOpened : true,
     }));
+    this.getData();
   };
 
   handleClose = () => {
@@ -37,8 +41,16 @@ export default class App extends React.Component {
     }));
   };
 
-  componentDidMount() {
+  getData = async () => {
+    const { data : { data } } = await axios.get("http://wonjinyi.iptime.org:8080/data");
+    console.log(data);
+    this.setState( {
+      doList : data,
+    });
+  }
 
+  componentDidMount() {
+    this.getData();
   }
 
 
@@ -52,9 +64,13 @@ export default class App extends React.Component {
         <DoMaker />
 
         <DoContainer>{ 
-          doList.map( (el) => (
-              <Do setModalInfo={this.handleOpen} name={el.name} content={el.content} />
-          )) 
+          ( () => {
+            const children = [];
+            for(let i=0; i<doList.length; i++){
+              children.push( <Do key={i} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} /> );
+            }
+            return children;
+          })()
         }</DoContainer>
 
         <DoModal modalOpened={modalOpened} handleClose={this.handleClose} name={modalName} content={modalContent} />
