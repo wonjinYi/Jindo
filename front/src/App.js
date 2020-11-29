@@ -12,17 +12,15 @@ import DoModal from "./components/DoModal";
 export default class App extends React.Component {
   
   state = {
+    formData : {
+      name : "",
+      content : "",
+    },
+
     modalId : 0,
     modalName : '',
     modalContent : '',
     modalOpened : false,
-
-    // doList : [
-    //   {"name":"wonjin", "content":"테스트입니다테스트스트"},
-    //   {"name":"wonjin", "content":"testtttetetsetsetsetset"},
-    //   {"name":"좀 긴 이름임니다", "content":"긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차"},
-    //   {"name":"wonjin", "content":"오후5시에 해킹"},
-    // ],
 
     doList : [],
   };
@@ -43,16 +41,52 @@ export default class App extends React.Component {
     }));
   };
 
-  getData = async () => {
-    const { data : { data } } = await axios.get("http://wonjinyi.iptime.org:8080/data");
+  updateFormData = (formName, formContent) => {
+    this.setState( () => ({
+      formData : {
+        name : formName,
+        content : formContent,
+      }
+    }), this.createDo)
+    
+  }
+
+  // API request
+  getDo = async () => {
+    const { data : { data } } = await axios.get("http://wonjinyi.iptime.org/data");
     console.log(data);
     this.setState( {
       doList : data,
     });
   }
 
+  createDo = async () => {
+    const { formData } = this.state;
+    console.log(this.state.formData.name, this.state.formData.content);
+    console.log(formData);
+    const create = await axios.post("http://wonjinyi.iptime.org/create", formData);
+    await this.getDo();
+  }
+
+  editDo = async () => {
+
+  }
+
+  deleteDo = async () => {
+
+  }
+  // createDo = async (name, content) => {
+  //   const { modalName, modalContent } = this.state;
+    
+  //   const create = await axios.post(
+  //     "http://wonjinyi.iptime.org/create",
+  //     {modalName, modalContent}
+  //   );
+  // }
+
+  //
   componentDidMount() {
-    this.getData();
+    this.getDo();
   }
 
 
@@ -63,7 +97,7 @@ export default class App extends React.Component {
       <AppWrap className="App">
         <Title className="title">Jindo</Title>
 
-        <DoMaker />
+        <DoMaker updateFormData={this.updateFormData} />
 
         <DoContainer>{ 
           ( () => {
