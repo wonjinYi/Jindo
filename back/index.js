@@ -4,9 +4,37 @@ const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const url = require('url');
+const fs = require('fs');
+const HTTPS = require('https');
 
 const dotenv = require('dotenv');
 dotenv.config();
+
+const domain = "jindo.back.wonj.in";
+const sslport = 8000
+
+const app = express();
+
+
+try {
+//   const option = {
+//     ca: fs.readFileSync(`/etc/letsencrypt/live/${domain}/fullchain.pem`),
+//     key: fs.readFileSync(path.resolve(process.cwd(), '/etc/letsencrypt/live/등록 시킨 도메인 이름/privkey.pem'), 'utf8').toString(),
+//     cert: fs.readFileSync(path.resolve(process.cwd(), '/etc/letsencrypt/live/등록 시킨 도메인 이름/cert.pem'), 'utf8').toString(),
+//   };
+    const option = {
+        
+    }
+  HTTPS.createServer(option, app).listen(sslport, () => {
+    //colorConsole.success(`[HTTPS] Soda Server is started on port ${colors.cyan(sslport)}`);
+    console.log(`[HTTPS] Jindo Server is started on port ${sslport}`);
+  });
+} catch (error) {
+  //colorConsole.error('[HTTPS] HTTPS 오류가 발생하였습니다. HTTPS 서버는 실행되지 않습니다.');
+  //colorConsole.warn(error);
+  console.log("erreere");
+  console.log(error);
+}
 
 // sequelize.sync({ force : false })
 //     .then ( () => {
@@ -24,12 +52,16 @@ let doList = { data : [
   ],
 }
 
-const app = express();
+//const app = express();
 app.set('port', process.env.PORT || 8000);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded( {extended : false }));
 
+app.use("/", (req, res, next) => {
+    console.log("root access");
+    res.send("hi");
+})
 app.get("/data", (req, res, next) => {
     console.log("하이하이 접속했음");
     res.header("Access-Control-Allow-Origin", "*");
@@ -67,6 +99,6 @@ app.use( (err, req, res, next) => {
     res.render('error');
 });
 
-app.listen(app.get('port'), () => {
-    console.log(`============ standby at port ${app.get('port')} ==============`);
-})
+// app.listen(app.get('port'), () => {
+//     console.log(`============ standby at port ${app.get('port')} ==============`);
+// })
