@@ -53,7 +53,7 @@ export default class App extends React.Component {
 
   // API request
   getDo = async () => {
-    const { data : { data } } = await axios.get("http://wonjinyi.iptime.org/data");
+    const { data : { data } } = await axios.get("https://jindoback.wonj.in/data");
     console.log(data);
     this.setState( {
       doList : data,
@@ -64,7 +64,7 @@ export default class App extends React.Component {
     const { formData } = this.state;
     console.log(this.state.formData.name, this.state.formData.content);
     console.log(formData);
-    const create = await axios.post("http://wonjinyi.iptime.org/create", formData);
+    const create = await axios.post("https://jindoback.wonj.in/create", formData);
     await this.getDo();
   }
 
