@@ -17,22 +17,17 @@ const app = express();
 
 
 try {
-//   const option = {
-//     ca: fs.readFileSync(`/etc/letsencrypt/live/${domain}/fullchain.pem`),
-//     key: fs.readFileSync(path.resolve(process.cwd(), '/etc/letsencrypt/live/등록 시킨 도메인 이름/privkey.pem'), 'utf8').toString(),
-//     cert: fs.readFileSync(path.resolve(process.cwd(), '/etc/letsencrypt/live/등록 시킨 도메인 이름/cert.pem'), 'utf8').toString(),
-//   };
-    const option = {
-        
-    }
+  const option = {
+    //ca : fs.readFileSync('keys/jindoback.wonj.in.ca-bundle.pem'),
+    key: fs.readFileSync('keys/jindoback.wonj.in.key.pem'),
+    cert: fs.readFileSync('keys/jindoback.wonj.in.crt.pem')
+  };
+
   HTTPS.createServer(option, app).listen(sslport, () => {
-    //colorConsole.success(`[HTTPS] Soda Server is started on port ${colors.cyan(sslport)}`);
     console.log(`[HTTPS] Jindo Server is started on port ${sslport}`);
   });
+  
 } catch (error) {
-  //colorConsole.error('[HTTPS] HTTPS 오류가 발생하였습니다. HTTPS 서버는 실행되지 않습니다.');
-  //colorConsole.warn(error);
-  console.log("erreere");
   console.log(error);
 }
 
@@ -58,10 +53,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded( {extended : false }));
 
-app.use("/", (req, res, next) => {
-    console.log("root access");
-    res.send("hi");
-})
+// app.use("/", (req, res, next) => {
+//     console.log("root access");
+//     res.send("hi");
+// })
 app.get("/data", (req, res, next) => {
     console.log("하이하이 접속했음");
     res.header("Access-Control-Allow-Origin", "*");
