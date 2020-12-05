@@ -9,139 +9,131 @@ import Do from "./components/Do";
 import DoMaker from "./components/DoMaker";
 import DoModal from "./components/DoModal";
 import Loading from "./components/Loading";
-
+import EmptyListNoti from "./components/EmptyListNoti";
 
 // 'App' COMPONENT
 export default class App extends React.Component {
-  
-  state = {
-    isLoading : true, 
 
-    formData : {
-      name : "",
-      content : "",
-    },
+    state = {
+        isLoading: true,
 
-    modalId : 0,
-    modalName : '',
-    modalContent : '',
-    modalOpened : false,
+        formData: {
+            name: "",
+            content: "",
+        },
 
-    doList : [],
-  };
+        modalId: 0,
+        modalName: '',
+        modalContent: '',
+        modalOpened: false,
 
-  handleOpen = (id, name, content) => {
-    this.setState(prevState=>({
-      modalId : id,
-      modalName : name,
-      modalContent : content,
-      modalOpened : true,
-    }));
-    console.log(id, name, content);
-  };
+        doList: [],
+    };
 
-  handleClose = () => {
-    this.setState(prevState=>({
-      modalOpened: false
-    }));
-  };
+    handleOpen = (id, name, content) => {
+        this.setState(prevState => ({
+            modalId: id,
+            modalName: name,
+            modalContent: content,
+            modalOpened: true,
+        }));
+        console.log(id, name, content);
+    };
 
-  updateFormData = (formName, formContent) => {
-    this.setState({isLoading : true});
-    this.setState( () => ({
-      formData : {
-        name : formName,
-        content : formContent,
-      }
-    }), this.createDo)
-    
-  }
+    handleClose = () => {
+        this.setState(prevState => ({
+            modalOpened: false
+        }));
+    };
 
-  // API request
-  getDo = async () => {
-    //this.setState({isLoading : true});
-    const { data : { data } } = await axios.get("https://jindoback.wonj.in/data");
-    console.log(data);
-    this.setState( {
-      doList : data,
-      isLoading : false,
-    });
-  }
+    updateFormData = (formName, formContent) => {
+        this.setState({ isLoading: true });
+        this.setState(() => ({
+            formData: {
+                name: formName,
+                content: formContent,
+            }
+        }), this.createDo)
 
-  createDo = async () => {
-    const { formData } = this.state;
-    console.log(this.state.formData.name, this.state.formData.content);
-    console.log(formData);
-    await axios.post("https://jindoback.wonj.in/create", formData);
-    await this.getDo();
-  }
+    }
 
-  editDo = async () => {
+    // API request
+    getDo = async () => {
+        //this.setState({isLoading : true});
+        const { data: { data } } = await axios.get("https://jindoback.wonj.in/data");
+        console.log(data);
+        this.setState({
+            doList: data,
+            isLoading: false,
+        });
+    }
 
-  }
+    createDo = async () => {
+        const { formData } = this.state;
+        console.log(this.state.formData.name, this.state.formData.content);
+        console.log(formData);
+        await axios.post("https://jindoback.wonj.in/create", formData);
+        await this.getDo();
+    }
 
-  deleteDo = async () => {
-    const { modalId } = this.state;
+    editDo = async () => {
 
-    this.handleClose();
-    this.setState( {
-      isLoading : true,
-    });
-    await axios.post("https://jindoback.wonj.in/delete", { id : modalId } );
+    }
 
-    await this.getDo();
-  }
-  // createDo = async (name, content) => {
-  //   const { modalName, modalContent } = this.state;
-    
-  //   const create = await axios.post(
-  //     "http://wonjinyi.iptime.org/create",
-  //     {modalName, modalContent}
-  //   );
-  // }
+    deleteDo = async () => {
+        const { modalId } = this.state;
 
-  //
-  componentDidMount() {
-    this.getDo();
-  }
+        this.handleClose();
+        this.setState({
+            isLoading: true,
+        });
+        await axios.post("https://jindoback.wonj.in/delete", { id: modalId });
+
+        await this.getDo();
+    }
 
 
-  render() {
-    const { isLoading, doList, modalName, modalContent,  modalOpened } = this.state;
+    //
 
-    return (
-      <AppWrap className="App">
-        <Title className="title">Jindo</Title>
-
-        <DoMaker updateFormData={this.updateFormData} />
-
-        {
-          isLoading 
-          ? <Loading />
-          : ''
-        }
-
-        <DoContainer>
-        { 
-
-            ( () => {
-              const children = [];
-              for(let i=doList.length-1; i>=0; i--){
-                children.push( <Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} /> );
-              }
-              return children;
-            })()
+    componentDidMount() {
+        this.getDo();
+    }
 
 
-        }
-        </DoContainer>
+    render() {
+        const { isLoading, doList, modalName, modalContent, modalOpened } = this.state;
 
-        <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} name={modalName} content={modalContent} />
+        return (
+            <AppWrap className="App">
+                <Title className="title">Jindo</Title>
 
-        <Credit>Wonjin Yi</Credit>
-      </AppWrap>
-    );
-  }
+                <DoMaker updateFormData={this.updateFormData} />
+
+                {
+                    isLoading 
+                        ? <Loading /> : ''
+                }
+
+                <DoContainer>
+                {
+                    doList.length > 0
+                        ? (() => {
+                            const children = [];
+                            for (let i = doList.length - 1; i >= 0; i--) {
+                                children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} />);
+                            }
+                            return children;
+                        })()
+                        : <EmptyListNoti />
+                }
+                </DoContainer>
+
+                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} name={modalName} content={modalContent} />
+
+                <Credit>Wonjin Yi</Credit>
+            </AppWrap>
+        );
+    }
 }
 
 // styled components
