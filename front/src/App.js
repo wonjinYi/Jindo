@@ -3,15 +3,20 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 
+
 // components
 import Do from "./components/Do";
 import DoMaker from "./components/DoMaker";
 import DoModal from "./components/DoModal";
+import Loading from "./components/Loading";
+
 
 // 'App' COMPONENT
 export default class App extends React.Component {
   
   state = {
+    isLoading : true, 
+
     formData : {
       name : "",
       content : "",
@@ -42,6 +47,7 @@ export default class App extends React.Component {
   };
 
   updateFormData = (formName, formContent) => {
+    this.setState({isLoading : true});
     this.setState( () => ({
       formData : {
         name : formName,
@@ -53,10 +59,12 @@ export default class App extends React.Component {
 
   // API request
   getDo = async () => {
+    //this.setState({isLoading : true});
     const { data : { data } } = await axios.get("https://jindoback.wonj.in/data");
     console.log(data);
     this.setState( {
       doList : data,
+      isLoading : false,
     });
   }
 
@@ -64,7 +72,7 @@ export default class App extends React.Component {
     const { formData } = this.state;
     console.log(this.state.formData.name, this.state.formData.content);
     console.log(formData);
-    const create = await axios.post("https://jindoback.wonj.in/create", formData);
+    await axios.post("https://jindoback.wonj.in/create", formData);
     await this.getDo();
   }
 
@@ -73,7 +81,15 @@ export default class App extends React.Component {
   }
 
   deleteDo = async () => {
+    const { modalId } = this.state;
 
+    this.handleClose();
+    this.setState( {
+      isLoading : true,
+    });
+    await axios.post("https://jindoback.wonj.in/delete", { id : modalId } );
+
+    await this.getDo();
   }
   // createDo = async (name, content) => {
   //   const { modalName, modalContent } = this.state;
@@ -91,7 +107,7 @@ export default class App extends React.Component {
 
 
   render() {
-    const { doList, modalName, modalContent,  modalOpened } = this.state;
+    const { isLoading, doList, modalName, modalContent,  modalOpened } = this.state;
 
     return (
       <AppWrap className="App">
@@ -99,17 +115,28 @@ export default class App extends React.Component {
 
         <DoMaker updateFormData={this.updateFormData} />
 
-        <DoContainer>{ 
-          ( () => {
-            const children = [];
-            for(let i=0; i<doList.length; i++){
-              children.push( <Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} /> );
-            }
-            return children;
-          })()
-        }</DoContainer>
+        {
+          isLoading 
+          ? <Loading />
+          : ''
+        }
 
-        <DoModal modalOpened={modalOpened} handleClose={this.handleClose} name={modalName} content={modalContent} />
+        <DoContainer>
+        { 
+
+            ( () => {
+              const children = [];
+              for(let i=doList.length-1; i>=0; i--){
+                children.push( <Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} /> );
+              }
+              return children;
+            })()
+
+
+        }
+        </DoContainer>
+
+        <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} name={modalName} content={modalContent} />
 
         <Credit>Wonjin Yi</Credit>
       </AppWrap>
