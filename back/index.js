@@ -10,11 +10,9 @@ const HTTPS = require('https');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const domain = "jindo.back.wonj.in";
 const sslport = 8000
 
 const app = express();
-
 
 try {
   const option = {
@@ -46,6 +44,7 @@ let doList = { data : [
     {"id":3, "name":"wonjin", "content":"오후5시에 해킹"},
   ],
 }
+let CNT = doList.data.length;
 
 //const app = express();
 app.set('port', process.env.PORT || 8000);
@@ -57,33 +56,48 @@ app.use(express.urlencoded( {extended : false }));
 //     console.log("root access");
 //     res.send("hi");
 // })
-app.get("/data", (req, res, next) => {
-    console.log("하이하이 접속했음");
-    res.header("Access-Control-Allow-Origin", "*");
-    res.json(doList);
-});
 
-app.options('/create', (req, res) => {
+
+app.use('/', (req, res,next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 
-    'Content-Type, Authorization, Content-Length, X-Requested-With');
-    res.send();
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    next();
+});
+
+app.get("/data", (req, res, next) => {
+  console.log("Read DONE");
+  res.json(doList);
 });
 
 app.post("/create", (req, res, next) => {
     const {data} = doList
-    console.log("create route");
-    console.log("------------------");
-    console.log(req.body);
-    res.header("Access-Control-Allow-Origin", "*");
+    
     
     data.push({
-        "id":data.length,
+        "id":CNT,
         "name":req.body.name,
         "content":req.body.content,
     })
+    CNT++;
+    console.log("Create DONE\n  ㄴ : ", req.body);
     res.json(req.body);
+});
+
+app.post("/delete", (req, res, next) => {
+  console.log("delete : ", req.body)
+
+  const {data} = doList
+  for(let i=0; i<data.length; i++){
+    if(data[i].id == req.body.id){
+      data.splice(i,1);
+      console.log(`Delete DONE!\n  ㄴDB id : ${i} , req id : ${req.body.id}`)
+      break;
+    }
+  }
+
+  res.json(req.body);
 });
 
 // Catch Error
@@ -91,7 +105,7 @@ app.use( (err, req, res, next) => {
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);
-    res.render('error');
+    res.send('error');
 });
 
 // app.listen(app.get('port'), () => {
