@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleModal({modalOpened, handleClose, name, content}) {
+export default function SimpleModal({modalOpened, handleClose, deleteDo, name, content}) {
     const classes = useStyles();
     
     const body = (
@@ -30,7 +30,7 @@ export default function SimpleModal({modalOpened, handleClose, name, content}) {
             </div>
             <Menu>
                 <IconButton><EditIcon /></IconButton>
-                <IconButton><DeleteForeverIcon /></IconButton>
+                <IconButton onClick={deleteDo}><DeleteForeverIcon /></IconButton>
             </Menu>
         </ModalBody>
     );
