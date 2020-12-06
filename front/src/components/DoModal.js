@@ -54,7 +54,12 @@ const ModalBody = styled.div`
     `;
 
 const ContentWrap = styled.div`
+    width : 100%;
     max-width : 100%;
+    display : flex;
+    flex-direction : column;
+    justify-contents : center;
+    align-items : center;
     `;
 const Name = styled.p`
     padding : 10px;
@@ -72,10 +77,10 @@ const Memo = styled.p`
     color : #4a4a4a;
     padding : 10px;
     border-radius : 5px;
-    word-break: keep-all;
-overflow-wrap: break-word; 
+    word-break: break-all;
+    overflow-wrap: break-word; 
     `;
-
+    //word-break: keep-all;
 const Menu = styled.div`
     display : flex;
     `;
