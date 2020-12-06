@@ -17,7 +17,11 @@ export default class Do extends React.Component {
 
         return (
             <DoWrap className="Do">
-                <DoName>{ name }</DoName>
+                <DoName>{ 
+                    (name.length < 20)
+                    ? name
+                    : name.slice(0,20)+ "..."
+                }</DoName>
                 <DoMemo variant="outlined" onClick={this.state.giveModalInfo}>{ 
                     (memo.length < 30)
                         ? memo
@@ -37,6 +41,7 @@ const DoWrap = styled.div`
 const DoName = withStyles({
     root: {
         textTransform: 'none',
+        //overflowWrap: 'break-word',
         margin: '5px',
         border: 'none',
         padding: '5px',
@@ -59,7 +64,7 @@ const DoMemo = withStyles({
         margin: '5px',
         border: 'none',
         padding: '5px',
-
+        //overflowWrap: 'break-word',
         color : '#4a4a4a',
         backgroundColor: 'white',
         '&:hover': {

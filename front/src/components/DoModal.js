@@ -11,7 +11,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    maxWidth: '90%',
+    maxWidth: '80%',
     backgroundColor : 'rgba(255,255,255,0.8)',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
@@ -24,10 +24,10 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, name, m
     const body = (
         
         <ModalBody className={classes.paper}>
-            <div>
+            <ContentWrap>
                 <Name>{ name }</Name>
                 <Memo>{ memo }</Memo>
-            </div>
+            </ContentWrap>
             <Menu>
                 <IconButton><EditIcon /></IconButton>
                 <IconButton onClick={deleteDo}><DeleteForeverIcon /></IconButton>
@@ -53,9 +53,12 @@ const ModalBody = styled.div`
     transform : translate(-50%, -50%);
     `;
 
+const ContentWrap = styled.div`
+    max-width : 100%;
+    `;
 const Name = styled.p`
     padding : 10px;
-    width : 100%;
+    
     text-align : center;
 
     background : #FFD57E;
@@ -69,6 +72,8 @@ const Memo = styled.p`
     color : #4a4a4a;
     padding : 10px;
     border-radius : 5px;
+    word-break: keep-all;
+overflow-wrap: break-word; 
     `;
 
 const Menu = styled.div`
