@@ -19,25 +19,25 @@ export default class App extends React.Component {
 
         formData: {
             name: "",
-            content: "",
+            memo: "",
         },
 
         modalId: 0,
         modalName: '',
-        modalContent: '',
+        modalMemo: '',
         modalOpened: false,
 
         doList: [],
     };
 
-    handleOpen = (id, name, content) => {
+    handleOpen = (id, name, memo) => {
         this.setState(prevState => ({
             modalId: id,
             modalName: name,
-            modalContent: content,
+            modalMemo : memo,
             modalOpened: true,
         }));
-        console.log(id, name, content);
+        console.log(id, name, memo);
     };
 
     handleClose = () => {
@@ -46,12 +46,12 @@ export default class App extends React.Component {
         }));
     };
 
-    updateFormData = (formName, formContent) => {
+    updateFormData = (formName, formMemo) => {
         this.setState({ isLoading: true });
         this.setState(() => ({
             formData: {
                 name: formName,
-                content: formContent,
+                memo: formMemo,
             }
         }), this.createDo)
 
@@ -70,7 +70,7 @@ export default class App extends React.Component {
 
     createDo = async () => {
         const { formData } = this.state;
-        console.log(this.state.formData.name, this.state.formData.content);
+        console.log(this.state.formData.name, this.state.formData.memo);
         console.log(formData);
         await axios.post("https://jindoback.wonj.in/create", formData);
         await this.getDo();
@@ -101,7 +101,7 @@ export default class App extends React.Component {
 
 
     render() {
-        const { isLoading, doList, modalName, modalContent, modalOpened } = this.state;
+        const { isLoading, doList, modalName, modalMemo, modalOpened } = this.state;
 
         return (
             <AppWrap className="App">
@@ -120,7 +120,7 @@ export default class App extends React.Component {
                         ? (() => {
                             const children = [];
                             for (let i = doList.length - 1; i >= 0; i--) {
-                                children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} content={doList[i].content} />);
+                                children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} memo={doList[i].memo} />);
                             }
                             return children;
                         })()
@@ -128,7 +128,7 @@ export default class App extends React.Component {
                 }
                 </DoContainer>
 
-                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} name={modalName} content={modalContent} />
+                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} name={modalName} memo={modalMemo} />
 
                 <Credit>Wonjin Yi</Credit>
             </AppWrap>

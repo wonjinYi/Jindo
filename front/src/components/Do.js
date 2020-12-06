@@ -6,23 +6,23 @@ export default class Do extends React.Component {
 
     state = {
         giveModalInfo : () => {
-            const { id, name, content } = this.props;
-            this.props.setModalInfo(id, name, content);
+            const { id, name, memo } = this.props;
+            this.props.setModalInfo(id, name, memo);
         }
     }
     
 
     render() {
-        const { name, content } = this.props;
+        const { name, memo } = this.props;
 
         return (
             <DoWrap className="Do">
                 <DoName>{ name }</DoName>
-                <DoContent variant="outlined" onClick={this.state.giveModalInfo}>{ 
-                    (content.length < 30)
-                        ? content
-                        : content.slice(0,30)+ "..."
-                }</DoContent>
+                <DoMemo variant="outlined" onClick={this.state.giveModalInfo}>{ 
+                    (memo.length < 30)
+                        ? memo
+                        : memo.slice(0,30)+ "..."
+                }</DoMemo>
      
                 
             </DoWrap>
@@ -52,7 +52,7 @@ const DoName = withStyles({
     },
 })(Button);
 
-const DoContent = withStyles({
+const DoMemo = withStyles({
     root: {
 
         textTransform: 'none',

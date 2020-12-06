@@ -7,27 +7,25 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 export default class DoMaker extends React.Component {
   state = {
     name : "",
-    content : "",
+    memo : "",
   }
 
   giveUpdatedFormData = () => {
-    const { name, content } = this.state;
-    this.props.updateFormData( name, content );
-    // const inputName = document.getElementById('input-name').value;
-    // const inputContent = document.getElementById('input-content').value;
-    // this.props.updateFormData( inputName, inputContent );
+    const { name, memo } = this.state;
+    this.props.updateFormData( name, memo );
   }
 
+
   render() {
-      const { name, content } = this.state;
+      const { name, memo } = this.state;
 
       return (
           <DoMakerWrap className="DoMaker">
               <BrownBorderTextField value={name} onChange={ (e) => {this.setState( {name:e.target.value} );} } 
-                id="input-name" label="What" variant="outlined" margin="dense" 
+                id="input-name" label="Who" variant="outlined" margin="dense" 
               />
-              <BrownBorderTextField value={content} onChange={ (e) => {this.setState( {content:e.target.value} );} }
-                id="input-content" label="Who" variant="outlined" margin="dense" 
+              <BrownBorderTextField value={memo} onChange={ (e) => {this.setState( {memo:e.target.value} );} }
+                id="input-memo" label="What" variant="outlined" margin="dense" 
               />
               <DooButton onClick={this.giveUpdatedFormData} variant="contained" disableElevation><AddCircleOutlineIcon /></DooButton>
           </DoMakerWrap>

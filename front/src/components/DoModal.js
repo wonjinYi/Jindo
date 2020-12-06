@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleModal({modalOpened, handleClose, deleteDo, name, content}) {
+export default function SimpleModal({modalOpened, handleClose, deleteDo, name, memo}) {
     const classes = useStyles();
     
     const body = (
@@ -26,7 +26,7 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, name, c
         <ModalBody className={classes.paper}>
             <div>
                 <Name>{ name }</Name>
-                <Content>{ content }</Content>
+                <Memo>{ memo }</Memo>
             </div>
             <Menu>
                 <IconButton><EditIcon /></IconButton>
@@ -55,7 +55,7 @@ const ModalBody = styled.div`
 
 const Name = styled.p`
     padding : 10px;
-
+    width : 100%;
     text-align : center;
 
     background : #FFD57E;
@@ -64,7 +64,7 @@ const Name = styled.p`
     font-weight : bold
     `;
 
-const Content = styled.p`
+const Memo = styled.p`
     background : #FFFFFF;
     color : #4a4a4a;
     padding : 10px;
