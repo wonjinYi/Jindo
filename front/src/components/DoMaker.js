@@ -12,7 +12,7 @@ export default class DoMaker extends React.Component {
 
   giveUpdatedFormData = () => {
     const { name, memo } = this.state;
-    this.props.updateFormData( name, memo );
+    this.props.updateFormData( name, memo, "create" );
   }
 
 

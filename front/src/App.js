@@ -22,44 +22,65 @@ export default class App extends React.Component {
             memo: "",
         },
 
-        modalId: 0,
-        modalName: '',
-        modalMemo: '',
-        modalOpened: false,
+        modalData: {
+            modalId: 0,
+            modalName: '',
+            modalMemo: '',
+            modalOpened: false,
+        },
 
         doList: [],
     };
 
     handleOpen = (id, name, memo) => {
         this.setState(prevState => ({
-            modalId: id,
-            modalName: name,
-            modalMemo : memo,
-            modalOpened: true,
+            modalData: {
+                modalId: id,
+                modalName: name,
+                modalMemo: memo,
+                modalOpened: true,
+            }
+
         }));
-        console.log(id, name, memo);
+        console.log(this.state.modalData);
     };
 
     handleClose = () => {
         this.setState(prevState => ({
-            modalOpened: false
+            modalData: {
+                modalId: 0,
+                modalName: '',
+                modalMemo: '',
+                modalOpened: false
+            }
         }));
     };
 
-    updateFormData = (formName, formMemo) => {
+    updateFormData = (formName, formMemo, updateType, id) => {
         this.setState({ isLoading: true });
-        this.setState(() => ({
-            formData: {
-                name: formName,
-                memo: formMemo,
-            }
-        }), this.createDo)
 
+        if (updateType === "create") {
+            this.setState(() => ({
+                formData: {
+                    name: formName,
+                    memo: formMemo,
+                }
+            }), this.createDo);
+        }
+        else if (updateType === "edit") {
+            this.setState({
+                modalData: {
+                    modalId: id,
+                    modalName: formName,
+                    modalMemo: formMemo,
+                    modalOpened: true,
+                },
+            }, this.editDo);
+        }
     }
 
     // API request
     getDo = async () => {
-        //this.setState({isLoading : true});
         const { data: { data } } = await axios.get("https://jindoback.wonj.in/data");
         console.log(data);
         this.setState({
@@ -70,18 +91,23 @@ export default class App extends React.Component {
 
     createDo = async () => {
         const { formData } = this.state;
-        console.log(this.state.formData.name, this.state.formData.memo);
-        console.log(formData);
         await axios.post("https://jindoback.wonj.in/create", formData);
         await this.getDo();
     }
 
     editDo = async () => {
+        const { modalData } = this.state;
+        
+        console.log(modalData);
+        await axios.post("https://jindoback.wonj.in/edit", modalData);
 
+        await this.getDo();
     }
 
     deleteDo = async () => {
-        const { modalId } = this.state;
+        const { modalData: {
+            modalId
+        } } = this.state;
 
         this.handleClose();
         this.setState({
@@ -93,15 +119,13 @@ export default class App extends React.Component {
     }
 
 
-    //
-
     componentDidMount() {
         this.getDo();
     }
 
 
     render() {
-        const { isLoading, doList, modalName, modalMemo, modalOpened } = this.state;
+        const { isLoading, doList, modalData: { modalId, modalName, modalMemo, modalOpened } } = this.state;
 
         return (
             <AppWrap className="App">
@@ -109,28 +133,31 @@ export default class App extends React.Component {
 
                 <DoMaker updateFormData={this.updateFormData} />
 
+                <DoContainer>
+                    {
+                        doList.length > 0
+                            ? (() => {
+                                const children = [];
+                                for (let i = doList.length - 1; i >= 0; i--) {
+                                    children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} memo={doList[i].memo} />);
+                                }
+                                return children;
+                            })()
+                            : <EmptyListNoti />
+                    }
+                </DoContainer>
+
+                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData} id={modalId} name={modalName} memo={modalMemo} />
+
+                <Credit>Wonjin Yi</Credit>
+
+
                 {
-                    isLoading 
+                    isLoading
                         ? <Loading /> : ''
                 }
 
-                <DoContainer>
-                {
-                    doList.length > 0
-                        ? (() => {
-                            const children = [];
-                            for (let i = doList.length - 1; i >= 0; i--) {
-                                children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} memo={doList[i].memo} />);
-                            }
-                            return children;
-                        })()
-                        : <EmptyListNoti />
-                }
-                </DoContainer>
 
-                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} name={modalName} memo={modalMemo} />
-
-                <Credit>Wonjin Yi</Credit>
             </AppWrap>
         );
     }
@@ -138,36 +165,35 @@ export default class App extends React.Component {
 
 // styled components
 const AppWrap = styled.div`
-  display : flex;
-  flex-direction : column;
-  align-items : center;
-  `;
+    display : flex;
+    flex-direction : column;
+    align-items : center;
+    `;
 
 const Title = styled.h1`
-  font-size: 5em;
-  text-align: center;
+    font-size: 5em;
+    text-align: center;
 
-  padding : 20px;
-  border-radius : 5px;
-  background: #fca652;
-  color: #ac4b1c;
-  `;
+    padding : 20px;
+    border-radius : 5px;
+    background: #fca652;
+    color: #ac4b1c;
+    `;
 
 const DoContainer = styled.div`
-  display : flex;
-  flex-direction : column;
-  justify-contents : center;
-  max-width : 50%;
+    display : flex;
+    flex-direction : column;
+    justify-contents : center;
+    max-width : 50%;
 
-  padding : 10px;
-  margin : 30px 0; 
-  border-radius : 5px;
+    padding : 10px;
+    margin : 30px 0; 
+    border-radius : 5px;
 
-  background : #ffefa0;
-  `;
+    background : #ffefa0;
+    `;
 
 const Credit = styled.p`
-  font-size : 1em;
-  color : #fca652;
-  `;
-
+    font-size : 1em;
+    color : #fca652;
+    `;
