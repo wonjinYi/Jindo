@@ -6,6 +6,7 @@ const session = require('express-session');
 const url = require('url');
 const fs = require('fs');
 const HTTPS = require('https');
+const { sequelize } = require('./models');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -29,13 +30,13 @@ try {
     console.log(error);
 }
 
-// sequelize.sync({ force : false })
-//     .then ( () => {
-//         console.log('Connected to Database successfully');
-//     })
-//     .catch ( (err) => {
-//         console.error(err);
-//     })
+sequelize.sync({ force : false })
+    .then ( () => {
+        console.log('Connected to Database successfully');
+    })
+    .catch ( (err) => {
+        console.error(err);
+    })
 
 let doList = {
     data: [
