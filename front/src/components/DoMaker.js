@@ -8,27 +8,30 @@ export default class DoMaker extends React.Component {
   state = {
     name : "",
     memo : "",
-  }
+  };
+
+
 
   giveUpdatedFormData = () => {
     const { name, memo } = this.state;
     this.props.updateFormData( name, memo, "create" );
-  }
+  };
 
 
   render() {
+      
       const { name, memo } = this.state;
-
+      console.log(name.length, memo.length);
       return (
           <DoMakerWrap className="DoMaker">
               <BrownBorderTextField value={name} onChange={ (e) => {this.setState( {name:e.target.value} );} } 
-                id="input-name" label="Who" variant="outlined" margin="dense" 
-                error={ ( name.length > 0 && name.length <= 53 ) ? false : true }
+                id="input-name" label="Who" variant="outlined" margin="dense" defaultValue="WHO"
               />
+              <TextValidator>{ ( name.length>53 ) ? "↑ In 1~53 character" : "" }</TextValidator>
               <BrownBorderTextField value={memo} onChange={ (e) => {this.setState( {memo:e.target.value} );} }
-                id="input-memo" label="What" variant="outlined" margin="dense" 
-                error={ ( name.length > 0 && name.length <= 530 ) ? false : true }
+                id="input-memo" label="What" variant="outlined" margin="dense" defaultValue="WHAT"
               />
+              <TextValidator>{ ( memo.length>530 ) ? "↑ In 1~530 character" : "" }</TextValidator>
               <DooButton onClick={this.giveUpdatedFormData} variant="contained" disableElevation><AddCircleOutlineIcon /></DooButton>
           </DoMakerWrap>
           
@@ -38,7 +41,7 @@ export default class DoMaker extends React.Component {
 
 const BrownBorderTextField  = withStyles({
   root: {
-      margin : '0 0 0.5em 0',
+      margin : '10px 0 0 0',
       '& label' : {
           color : '#fca652',
       },
@@ -61,6 +64,7 @@ const BrownBorderTextField  = withStyles({
 
 const DooButton = withStyles({
 root: {
+  margin : '10px 0 0 0',
   boxShadow: 'none',
   textTransform: 'none',
   fontSize: '1.5em',
@@ -92,4 +96,10 @@ const DoMakerWrap = styled.div`
   border-radius : 5px;
 
   background : #ffefa0;
+  `;
+
+const TextValidator = styled.p`
+  color : red;
+  margin : 0;
+  padding : 0;
   `;
