@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { TextField, Button, withStyles } from "@material-ui/core";
-const raro = require("raro-number"); // 53
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+
+const raro = require("raro-number"); // 53
 
 
 export default class DoMaker extends React.Component {
@@ -15,8 +16,11 @@ export default class DoMaker extends React.Component {
 
 
   giveUpdatedFormData = () => {
-    const { name, memo } = this.state;
-    this.props.updateFormData( name, memo, "create" );
+    
+      const { name, memo } = this.state;
+      if(name.length > 0 && memo.length > 0) {
+        this.props.updateFormData( name, memo, "create" );
+      }
   };
 
 

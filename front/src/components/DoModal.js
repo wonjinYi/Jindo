@@ -22,8 +22,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const giveUpdatedFormData = (setEditmode, updateFormData, id, modalName, modalMemo) => {
-    updateFormData( modalName, modalMemo, "edit", id);
-    setEditmode(false); 
+    if(modalName.length > 0 && modalMemo.length > 0) {
+        updateFormData( modalName, modalMemo, "edit", id);
+        setEditmode(false);
+    }
+     
 }
 
 export default function SimpleModal({modalOpened, handleClose, deleteDo, updateFormData, id, name, memo}) {
