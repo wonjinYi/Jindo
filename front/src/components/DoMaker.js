@@ -23,9 +23,11 @@ export default class DoMaker extends React.Component {
           <DoMakerWrap className="DoMaker">
               <BrownBorderTextField value={name} onChange={ (e) => {this.setState( {name:e.target.value} );} } 
                 id="input-name" label="Who" variant="outlined" margin="dense" 
+                error={ ( name.length > 0 && name.length <= 53 ) ? false : true }
               />
               <BrownBorderTextField value={memo} onChange={ (e) => {this.setState( {memo:e.target.value} );} }
                 id="input-memo" label="What" variant="outlined" margin="dense" 
+                error={ ( name.length > 0 && name.length <= 530 ) ? false : true }
               />
               <DooButton onClick={this.giveUpdatedFormData} variant="contained" disableElevation><AddCircleOutlineIcon /></DooButton>
           </DoMakerWrap>

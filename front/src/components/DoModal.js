@@ -54,9 +54,11 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
             <ContentWrap>
                 <BrownBorderTextField value={modalName} onChange={ (e) => { setModalName(e.target.value) } } 
                     id="input-name" label="Who" variant="outlined" margin="dense" fullWidth
+                    error={ ( name.length > 0 && name.length <= 53 ) ? false : true }
                 />
                 <BrownBorderTextField value={modalMemo} onChange={ (e) => { setModalMemo(e.target.value) } }
                     id="input-memo" label="What" variant="outlined" margin="dense" multiline fullWidth
+                    error={ ( name.length > 0 && name.length <= 530 ) ? false : true }
                 />
             </ContentWrap>  
             
