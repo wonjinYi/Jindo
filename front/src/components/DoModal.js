@@ -22,7 +22,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const giveUpdatedFormData = (setEditmode, updateFormData, id, modalName, modalMemo) => {
-    if(modalName.length > 0 && modalMemo.length > 0) {
+    const nameValidation = ( modalName.length > 0 && modalName.length <= raro ) ? true : false ;
+    const memoVliadation = ( modalMemo.length > 0 && modalMemo.length <= raro*10 ) ? true : false ;
+    if(nameValidation && memoVliadation) {
         updateFormData( modalName, modalMemo, "edit", id);
         setEditmode(false);
     }

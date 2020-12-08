@@ -18,7 +18,11 @@ export default class DoMaker extends React.Component {
   giveUpdatedFormData = () => {
     
       const { name, memo } = this.state;
-      if(name.length > 0 && memo.length > 0) {
+
+      const nameValidation = ( name.length > 0 && name.length <= raro ) ? true : false ;
+      const memoVliadation = ( memo.length > 0 && memo.length <= raro*10 ) ? true : false ;
+
+      if(nameValidation && memoVliadation) {
         this.props.updateFormData( name, memo, "create" );
       }
   };
