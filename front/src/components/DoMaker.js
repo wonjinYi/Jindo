@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { TextField, Button, withStyles } from "@material-ui/core";
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+const raro = require("raro-number");
 
 export default class DoMaker extends React.Component {
   state = {
@@ -27,11 +28,11 @@ export default class DoMaker extends React.Component {
               <BrownBorderTextField value={name} onChange={ (e) => {this.setState( {name:e.target.value} );} } 
                 id="input-name" label="Who" variant="outlined" margin="dense" defaultValue="WHO"
               />
-              <TextValidator>{ ( name.length>53 ) ? "↑ In 1~53 character" : "" }</TextValidator>
+              <TextValidator>{ ( name.length>(raro) ) ? "↑ In 1~53 character" : "" }</TextValidator>
               <BrownBorderTextField value={memo} onChange={ (e) => {this.setState( {memo:e.target.value} );} }
                 id="input-memo" label="What" variant="outlined" margin="dense" defaultValue="WHAT"
               />
-              <TextValidator>{ ( memo.length>530 ) ? "↑ In 1~530 character" : "" }</TextValidator>
+              <TextValidator>{ ( memo.length>(raro*10) ) ? "↑ In 1~530 character" : "" }</TextValidator>
               <DooButton onClick={this.giveUpdatedFormData} variant="contained" disableElevation><AddCircleOutlineIcon /></DooButton>
           </DoMakerWrap>
           
