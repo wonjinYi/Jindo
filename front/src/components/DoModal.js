@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 
+
 import { makeStyles, TextField, withStyles } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,7 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-
+const raro = require("raro-number"); // 53
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -54,12 +55,12 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
             <ContentWrap>
                 <BrownBorderTextField value={modalName} onChange={ (e) => { setModalName(e.target.value) } } 
                     id="input-name" label="Who" variant="outlined" margin="dense" fullWidth
-                    error={ ( name.length > 0 && name.length <= 53 ) ? false : true }
                 />
+                <TextValidator>{ ( modalName.length>(raro) ) ? "↑ 53 Characters or less" : "" }</TextValidator>
                 <BrownBorderTextField value={modalMemo} onChange={ (e) => { setModalMemo(e.target.value) } }
                     id="input-memo" label="What" variant="outlined" margin="dense" multiline fullWidth
-                    error={ ( name.length > 0 && name.length <= 530 ) ? false : true }
                 />
+                <TextValidator>{ ( modalMemo.length>(raro*10) ) ? "↑ 530 Characters or less" : "" }</TextValidator>
             </ContentWrap>  
             
             <Menu>
@@ -156,3 +157,9 @@ const BrownBorderTextField  = withStyles({
         },
     },
 })(TextField);
+
+const TextValidator = styled.p`
+  color : red;
+  margin : 0;
+  padding : 0;
+  `;
