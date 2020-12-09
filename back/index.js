@@ -1,13 +1,16 @@
 const express = require("express");
+const HTTPS = require('https');
+
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const url = require('url');
 const fs = require('fs');
-const HTTPS = require('https');
-const { sequelize } = require('./models');
 
+const { Op } = require('sequelize');
+const { sequelize } = require('./models');
+const { PublicBoard } = require('./models')
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -38,26 +41,11 @@ sequelize.sync({ force : false })
         console.error(err);
     })
 
-let doList = {
-    data: [
-        { "id": 0, "name": "wonjin", "memo": "테스트입니다테스트스트" },
-        { "id": 1, "name": "wonjin", "memo": "testtttetetsetsetsetset" },
-        { "id": 2, "name": "좀 긴 이름임니다", "memo": "긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차긴글테스트 긴글긴글 길다길어길어길어 긴글이다 긴글 기이이이일어 길어길어 길면 기차" },
-        { "id": 3, "name": "wonjin", "memo": "오후5시에 해킹" },
-    ],
-}
-let CNT = doList.data.length;
-
-//const app = express();
 app.set('port', process.env.PORT || 8000);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// app.use("/", (req, res, next) => {
-//     console.log("root access");
-//     res.send("hi");
-// })
 
 
 app.use('/', (req, res, next) => {
@@ -68,53 +56,61 @@ app.use('/', (req, res, next) => {
     next();
 });
 
-app.get("/data", (req, res, next) => {
+app.get("/public_data", async (req, res, next) => {
+    const read = await PublicBoard.findAll({
+        attributes : ['id', 'name', 'memo', 'updatedAt']
+    });
+
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
     console.log("Read DONE");
-    res.json(doList);
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
+
+    res.json(read);
 });
 
-app.post("/create", (req, res, next) => {
-    const { data } = doList
+app.post("/create", async (req, res, next) => {
+    const create = await PublicBoard.create({
+        name : req.body.name,
+        memo : req.body.memo,
+    });
 
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
+    console.log(`Create DONE\n  ㄴ name : ${req.body.name}   memo : ${req.body.memo}`);
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
 
-    data.push({
-        "id": CNT,
-        "name": req.body.name,
-        "memo": req.body.memo,
-    })
-    CNT++;
-    console.log("Create DONE\n  ㄴ : ", req.body);
-    res.json(req.body);
+    res.json(create);
 });
 
-app.post("/edit", (req, res, next) => {
-    const { data } = doList
-    console.log("test EDIT ", req.body);
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].id == req.body.modalId) {
-            data[i].name = req.body.modalName;
-            data[i].memo = req.body.modalMemo;
-            console.log(`Edit DONE!\n  ㄴDB index : ${i} , req id : ${req.body.modalId}`)
-            break;
-        }
-    }
-    res.json(req.body);
+app.post("/edit", async (req, res, next) => {
+    const edit = await PublicBoard.update({
+        name : req.body.modalName,
+        memo : req.body.modalMemo,
+    }, {
+        where : { id : req.body.modalId },
+    });
+
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
+    console.log(`Edit DONE\n  ㄴ id : ${req.body.modalId}   name : ${req.body.modalName}   memo : ${req.body.modalMemo}`);
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
+
+    res.json(edit);
 });
 
-app.post("/delete", (req, res, next) => {
-    //console.log("delete : ", req.body)
+app.post("/delete", async (req, res, next) => {
+    const del = await PublicBoard.destroy({
+        where : { id : req.body.id },
+    });
 
-    const { data } = doList
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].id == req.body.id) {
-            data.splice(i, 1);
-            console.log(`Delete DONE!\n  ㄴDB index : ${i} , req id : ${req.body.id}`)
-            break;
-        }
-    }
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
+    console.log(`Delete DONE\n  ㄴ id : ${req.body.id}`);
+    console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
 
-    res.json(req.body);
+    res.json(del);
 });
+
+app.use((req, res, next) => {
+    res.status(404).send("여기가 어디지? 주위를 둘러보니 아무것도 없었다\nhttps://wonj.in/")
+  });
 
 // Catch Error
 app.use((err, req, res, next) => {
@@ -123,7 +119,3 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.send('error');
 });
-
-// app.listen(app.get('port'), () => {
-//     console.log(`============ standby at port ${app.get('port')} ==============`);
-// })
