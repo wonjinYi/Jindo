@@ -27,6 +27,7 @@ export default class App extends React.Component {
             modalName: '',
             modalMemo: '',
             modalOpened: false,
+            modalUpdatedAt : '',
         },
 
         doList: [],
@@ -81,7 +82,8 @@ export default class App extends React.Component {
 
     // API request
     getDo = async () => {
-        const { data: { data } } = await axios.get("https://jindoback.wonj.in/data");
+        //const { data: { data } } = await axios.get("https://jindoback.wonj.in/data");
+        const { data } = await axios.get("https://jindoback.wonj.in/public_data")
         console.log(data);
         this.setState({
             doList: data,
@@ -147,7 +149,7 @@ export default class App extends React.Component {
                     }
                 </DoContainer>
 
-                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData} id={modalId} name={modalName} memo={modalMemo} />
+                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData} id={modalId} name={modalName} memo={modalMemo} updatedAt={"업데이트된 시간 들어갈곳"}/>
 
                 <Credit>Wonjin Yi</Credit>
 

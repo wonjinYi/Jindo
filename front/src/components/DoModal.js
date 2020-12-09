@@ -31,7 +31,7 @@ const giveUpdatedFormData = (setEditmode, updateFormData, id, modalName, modalMe
      
 }
 
-export default function SimpleModal({modalOpened, handleClose, deleteDo, updateFormData, id, name, memo}) {
+export default function SimpleModal({modalOpened, handleClose, deleteDo, updateFormData, id, name, memo, updatedAt}) {
     const classes = useStyles();
     
     const [editmode, setEditmode] = useState(false);
@@ -44,6 +44,7 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
     const viewBody = (
         <ModalBody className={classes.paper}>
             <ContentWrap>
+                <p>{ updatedAt }</p>
                 <Name>{ modalName }</Name>
                 <Memo>{ modalMemo }</Memo>
             </ContentWrap>  
