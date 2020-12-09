@@ -108,9 +108,9 @@ app.post("/delete", async (req, res, next) => {
     res.json(del);
 });
 
-app.use((req, res, next) => {
-    res.status(404).send("여기가 어디지? 주위를 둘러보니 아무것도 없었다\nhttps://wonj.in/")
-  });
+app.use("/", (req, res, next) => {
+    res.send("여기가 어디지? 주변을 둘러보니 순백의 공허만이 가득했다")
+})
 
 // Catch Error
 app.use((err, req, res, next) => {
