@@ -41,10 +41,13 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
     useEffect( () => { setModalName(name) }, [name])
     useEffect( () => { setModalMemo(memo) }, [memo])
 
+
+    const parsedUpdatedAt = updatedAt.substring(0,10) + ' ' + updatedAt.substring(11,16);
+
     const viewBody = (
         <ModalBody className={classes.paper}>
             <ContentWrap>
-                <p>{ updatedAt }</p>
+                <p>{ parsedUpdatedAt }</p>
                 <Name>{ modalName }</Name>
                 <Memo>{ modalMemo }</Memo>
             </ContentWrap>  
