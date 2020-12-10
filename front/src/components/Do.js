@@ -6,8 +6,8 @@ export default class Do extends React.Component {
 
     state = {
         giveModalInfo : () => {
-            const { id, name, memo } = this.props;
-            this.props.setModalInfo(id, name, memo);
+            const { id } = this.props;
+            this.props.setModalInfo(id);
         }
     }
     

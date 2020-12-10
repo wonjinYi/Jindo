@@ -78,11 +78,23 @@ export default class App extends React.Component {
 
     findDoById = (modalId) => {
         const { doList } = this.state;
+
         const isTarget = (el) => el.id == modalId;
         const targetIndex = doList.findIndex(isTarget);
 
-        console.log( doList[targetIndex] );
-        return targetIndex;
+        if ( targetIndex != -1){
+            const targetDo = doList[targetIndex]
+            //console.log("fineDoById targetDo : ",targetDo);
+            return targetDo;
+        } else {
+            const targetDo = {
+                id : 'error',
+                name : 'error',
+                memo : 'error',
+                updatedAt : 'error',
+            };
+            return targetDo;
+        }
     }
 
     // API request
@@ -134,10 +146,9 @@ export default class App extends React.Component {
         const { isLoading, doList, modalData: { modalId, modalOpened } } = this.state;
         //console.log('updated at : ', doList[modalId].updatedAt);
         
-        const targetIndex = this.findDoById(modalId);
-        const { name, memo, updatedAt } = doList[targetIndex];
-        console.log('target ',name, memo, updatedAt);
-
+        const targetDo = this.findDoById(modalId);
+        console.log('targetDO ',targetDo)
+        
         return (
             <AppWrap className="App">
                 <Title className="title">Jindo</Title>
@@ -147,25 +158,28 @@ export default class App extends React.Component {
                 <DoContainer>
                     {
                         doList.length > 0
-                            ? (() => {
-                                const children = [];
-                                for (let i = doList.length - 1; i >= 0; i--) {
-                                    children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} memo={doList[i].memo} />);
-                                }
-                                return children;
-                            })()
-                            : <EmptyListNoti />
+                            ?   (() => {
+                                    const children = [];
+                                    for (let i = doList.length - 1; i >= 0; i--) {
+                                        children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} memo={doList[i].memo} />);
+                                    }
+                                    return children;
+                                })()
+                            :   <EmptyListNoti />
                     }
                 </DoContainer>
 
-                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData} id={modalId} name={name} memo={memo} updatedAt={updatedAt}/>
+                <DoModal    modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
+                            id={targetDo.id} name={targetDo.name} memo={targetDo.memo} updatedAt={targetDo.updatedAt}
+                />
 
                 <Credit>Wonjin Yi</Credit>
 
 
                 {
                     isLoading
-                        ? <Loading /> : ''
+                        ? <Loading /> 
+                        : ''
                 }
 
 
