@@ -24,25 +24,23 @@ export default class App extends React.Component {
 
         modalData: {
             modalId: 0,
-            modalName: '',
-            modalMemo: '',
             modalOpened: false,
-            modalUpdatedAt : '',
         },
 
         doList: [],
     };
 
-    handleOpen = (id, name, memo) => {
-        this.setState(prevState => ({
+    handleOpen = (id) => {
+        //const updatedAt = this.state.doList[id]
+        //console.log('updated ',updatedAt)
+        this.setState({
             modalData: {
                 modalId: id,
-                modalName: name,
-                modalMemo: memo,
                 modalOpened: true,
+                //modalUpdatedAt : updatedAt,
             }
+        });
 
-        }));
         console.log(this.state.modalData);
     };
 
@@ -50,9 +48,8 @@ export default class App extends React.Component {
         this.setState(prevState => ({
             modalData: {
                 modalId: 0,
-                modalName: '',
-                modalMemo: '',
-                modalOpened: false
+                modalOpened: false,
+               // modalUpdatedAt : '',
             }
         }));
     };
@@ -69,20 +66,27 @@ export default class App extends React.Component {
             }), this.createDo);
         }
         else if (updateType === "edit") {
+
             this.setState({
                 modalData: {
                     modalId: id,
-                    modalName: formName,
-                    modalMemo: formMemo,
                     modalOpened: true,
                 },
             }, this.editDo);
         }
     }
 
+    findDoById = (modalId) => {
+        const { doList } = this.state;
+        const isTarget = (el) => el.id == modalId;
+        const targetIndex = doList.findIndex(isTarget);
+
+        console.log( doList[targetIndex] );
+        return targetIndex;
+    }
+
     // API request
     getDo = async () => {
-        //const { data: { data } } = await axios.get("https://jindoback.wonj.in/data");
         const { data } = await axios.get("https://jindoback.wonj.in/public_data")
         console.log(data);
         this.setState({
@@ -97,14 +101,14 @@ export default class App extends React.Component {
         await this.getDo();
     }
 
-    editDo = async () => {
-        const { modalData } = this.state;
+    // editDo = async () => {
+    //     const { modalData } = this.state;
         
-        console.log(modalData);
-        await axios.post("https://jindoback.wonj.in/edit", modalData);
+    //     console.log(modalData);
+    //     await axios.post("https://jindoback.wonj.in/edit", modalData);
 
-        await this.getDo();
-    }
+    //     await this.getDo();
+    // }
 
     deleteDo = async () => {
         const { modalData: {
@@ -127,7 +131,12 @@ export default class App extends React.Component {
 
 
     render() {
-        const { isLoading, doList, modalData: { modalId, modalName, modalMemo, modalOpened } } = this.state;
+        const { isLoading, doList, modalData: { modalId, modalOpened } } = this.state;
+        //console.log('updated at : ', doList[modalId].updatedAt);
+        
+        const targetIndex = this.findDoById(modalId);
+        const { name, memo, updatedAt } = doList[targetIndex];
+        console.log('target ',name, memo, updatedAt);
 
         return (
             <AppWrap className="App">
@@ -149,7 +158,7 @@ export default class App extends React.Component {
                     }
                 </DoContainer>
 
-                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData} id={modalId} name={modalName} memo={modalMemo} updatedAt={"업데이트된 시간 들어갈곳"}/>
+                <DoModal modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData} id={modalId} name={name} memo={memo} updatedAt={updatedAt}/>
 
                 <Credit>Wonjin Yi</Credit>
 
