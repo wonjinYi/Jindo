@@ -83,14 +83,14 @@ app.post("/create", async (req, res, next) => {
 
 app.post("/edit", async (req, res, next) => {
     const edit = await PublicBoard.update({
-        name : req.body.modalName,
-        memo : req.body.modalMemo,
+        name : req.body.name,
+        memo : req.body.memo,
     }, {
-        where : { id : req.body.modalId },
+        where : { id : req.body.id },
     });
 
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
-    console.log(`Edit DONE\n  ㄴ id : ${req.body.modalId}   name : ${req.body.modalName}   memo : ${req.body.modalMemo}`);
+    console.log(`Edit DONE\n  ㄴ id : ${req.body.id}   name : ${req.body.name}   memo : ${req.body.memo}`);
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
 
     res.json(edit);

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 
-
 import { makeStyles, TextField, withStyles } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,7 +9,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
 const raro = require("raro-number"); // 53
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -24,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
 const giveUpdatedFormData = (setEditmode, updateFormData, id, modalName, modalMemo) => {
     const nameValidation = ( modalName.length > 0 && modalName.length <= raro ) ? true : false ;
     const memoVliadation = ( modalMemo.length > 0 && modalMemo.length <= raro*10 ) ? true : false ;
+
     if(nameValidation && memoVliadation) {
         updateFormData( modalName, modalMemo, "edit", id);
         setEditmode(false);
-    }
-     
+    } 
 }
 
 export default function SimpleModal({modalOpened, handleClose, deleteDo, updateFormData, id, name, memo, updatedAt}) {
