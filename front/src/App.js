@@ -8,6 +8,8 @@ import axios from "axios";
 import Do from "./components/Do";
 import DoMaker from "./components/DoMaker";
 import DoModal from "./components/DoModal";
+import BoardSelector from "./components/BoardSelector";
+
 import Loading from "./components/Loading";
 import EmptyListNoti from "./components/EmptyListNoti";
 
@@ -146,6 +148,8 @@ export default class App extends React.Component {
         return (
             <AppWrap className="App">
                 <Title className="title">Jindo</Title>
+
+                <BoardSelector />
 
                 <DoMaker updateFormData={this.updateFormData} />
 
