@@ -32,7 +32,7 @@ export default class App extends React.Component {
         doList: [],
     };
 
-    handleOpen = (id) => {
+    openModal = (id) => {
         this.setState({
             modalData: {
                 modalId: id,
@@ -41,7 +41,7 @@ export default class App extends React.Component {
         });
     };
 
-    handleClose = () => {
+    closeModal = () => {
         this.setState({
             modalData: {
                 modalId: 0,
@@ -124,7 +124,7 @@ export default class App extends React.Component {
             modalId
         } } = this.state;
 
-        this.handleClose();
+        this.closeModal();
         this.setState({
             isLoading: true,
         });
@@ -159,7 +159,7 @@ export default class App extends React.Component {
                             ?   (() => {
                                     const children = [];
                                     for (let i = doList.length - 1; i >= 0; i--) {
-                                        children.push(<Do key={i} id={doList[i].id} setModalInfo={this.handleOpen} name={doList[i].name} memo={doList[i].memo} />);
+                                        children.push(<Do key={i} id={doList[i].id} setModalInfo={this.openModal} name={doList[i].name} memo={doList[i].memo} />);
                                     }
                                     return children;
                                 })()
@@ -167,7 +167,7 @@ export default class App extends React.Component {
                     }
                 </DoContainer>
 
-                <DoModal    modalOpened={modalOpened} handleClose={this.handleClose} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
+                <DoModal    modalOpened={modalOpened} handleClose={this.closeModal} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
                             id={targetDo.id} name={targetDo.name} memo={targetDo.memo} updatedAt={targetDo.updatedAt}
                 />
 
