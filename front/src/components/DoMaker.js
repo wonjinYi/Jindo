@@ -85,13 +85,11 @@ root: {
   backgroundColor: '#fca652',
   '&:hover': {
     backgroundColor: '#e0944a',
-    //borderColor: '#0062cc',
     boxShadow: 'none',
   },
   '&:active': {
     boxShadow: 'none',
     backgroundColor: '#e0944a',
-    //borderColor: '#005cbf',
   },
 },
 })(Button);
@@ -102,7 +100,7 @@ const DoMakerWrap = styled.div`
   flex-direction : column;
   justify-contents : center;
   
-  padding : 10px;
+  padding : 0 10px 10px 10px;
   border-radius : 5px;
 
   background : #ffefa0;
