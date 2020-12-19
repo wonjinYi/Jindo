@@ -13,8 +13,6 @@ export default class DoMaker extends React.Component {
     memo : "",
   };
 
-
-
   giveUpdatedFormData = () => {
     
       const { name, memo } = this.state;
@@ -27,11 +25,10 @@ export default class DoMaker extends React.Component {
       }
   };
 
-
   render() {
       
       const { name, memo } = this.state;
-      console.log(name.length, memo.length);
+
       return (
           <DoMakerWrap className="DoMaker">
               <BrownBorderTextField value={name} onChange={ (e) => {this.setState( {name:e.target.value} );} } 
@@ -73,25 +70,25 @@ const BrownBorderTextField  = withStyles({
 })(TextField);
 
 const DooButton = withStyles({
-root: {
-  margin : '10px 0 0 0',
-  boxShadow: 'none',
-  textTransform: 'none',
-  fontSize: '1.5em',
-  padding: '6px 0',
-  border: 'none',
-  lineHeight: 1.5,
-  color : 'white',
-  backgroundColor: '#fca652',
-  '&:hover': {
-    backgroundColor: '#e0944a',
+  root: {
+    margin : '10px 0 0 0',
     boxShadow: 'none',
+    textTransform: 'none',
+    fontSize: '1.5em',
+    padding: '6px 0',
+    border: 'none',
+    lineHeight: 1.5,
+    color : 'white',
+    backgroundColor: '#fca652',
+    '&:hover': {
+      backgroundColor: '#e0944a',
+      boxShadow: 'none',
+    },
+    '&:active': {
+      boxShadow: 'none',
+      backgroundColor: '#e0944a',
+    },
   },
-  '&:active': {
-    boxShadow: 'none',
-    backgroundColor: '#e0944a',
-  },
-},
 })(Button);
 
 //styled-component.
