@@ -29,7 +29,8 @@ export default class App extends React.Component {
             modalOpened: false,
         },
 
-        doList: [],
+        boardType : '',
+        doList : [],
     };
 
     openModal = (id) => {
@@ -71,6 +72,10 @@ export default class App extends React.Component {
         }
     }
 
+    updateBoardType = (type) => {
+        this.setState({ boardType : type });
+        console.log("boardtype : ",type);
+    }
     findDoById = (modalId) => {
         const { doList } = this.state;
 
@@ -143,13 +148,13 @@ export default class App extends React.Component {
         const { isLoading, doList, modalData: { modalId, modalOpened } } = this.state;
 
         const targetDo = this.findDoById(modalId);
-        console.log('targetDO ',targetDo)
+        //console.log('targetDO ',targetDo)
         
         return (
             <AppWrap className="App">
                 <Title className="title">Jindo</Title>
 
-                <BoardSelector />
+                <BoardSelector updateBoardType={this.updateBoardType} />
 
                 <DoMaker updateFormData={this.updateFormData} />
 
