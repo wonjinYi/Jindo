@@ -2,29 +2,30 @@
 import React from "react";
 import styled from "styled-components";
 //components
-import EmptyListNoti from "./components/EmptyListNoti";
+import Do from "./Do";
+import EmptyListNoti from "./EmptyListNoti";
 
 export default function DoContainer({setModalInfo, doList}) {
 
 
     return (
-        <DoContainer>
+        <DoContainerWrap>
         {
             doList.length > 0
                 ?   (() => {
                         const children = [];
                         for (let i = doList.length - 1; i >= 0; i--) {
-                            children.push(<Do key={i} id={doList[i].id} setModalInfo={this.openModal} name={doList[i].name} memo={doList[i].memo} />);
+                            children.push(<Do key={i} id={doList[i].id} setModalInfo={setModalInfo} name={doList[i].name} memo={doList[i].memo} />);
                         }
                         return children;
                     })()
                 :   <EmptyListNoti />
         }
-        </DoContainer>
+        </DoContainerWrap>
     );
 }
 
-const DoContainer = styled.div`
+const DoContainerWrap = styled.div`
     display : flex;
     flex-direction : column;
     justify-contents : center;

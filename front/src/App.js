@@ -5,13 +5,15 @@ import axios from "axios";
 
 
 // components
-import Do from "./components/Do";
+
 import DoMaker from "./components/DoMaker";
+import Board from "./components/Board";
 import DoModal from "./components/DoModal";
 import BoardSelector from "./components/BoardSelector";
 
+
 import Loading from "./components/Loading";
-import EmptyListNoti from "./components/EmptyListNoti";
+
 
 // 'App' COMPONENT
 export default class App extends React.Component {
@@ -31,6 +33,9 @@ export default class App extends React.Component {
 
         boardType : '',
         doList : [],
+
+        userInfo : null,
+        //userAuthenticated : (userInfo != null),
     };
 
     openModal = (id) => {
@@ -75,7 +80,11 @@ export default class App extends React.Component {
     updateBoardType = (type) => {
         this.setState({ boardType : type });
         console.log("boardtype : ",type);
+
+        this.setState({ isLoading: true });
+        this.getDo();
     }
+    
     findDoById = (modalId) => {
         const { doList } = this.state;
 
@@ -98,6 +107,8 @@ export default class App extends React.Component {
 
     // API request
     getDo = async () => {
+        const { boardType } = this.state;
+
         const { data } = await axios.get("https://jindoback.wonj.in/public_data")
         console.log(data);
         this.setState({
@@ -158,19 +169,7 @@ export default class App extends React.Component {
 
                 <DoMaker updateFormData={this.updateFormData} />
 
-                <DoContainer>
-                    {
-                        doList.length > 0
-                            ?   (() => {
-                                    const children = [];
-                                    for (let i = doList.length - 1; i >= 0; i--) {
-                                        children.push(<Do key={i} id={doList[i].id} setModalInfo={this.openModal} name={doList[i].name} memo={doList[i].memo} />);
-                                    }
-                                    return children;
-                                })()
-                            :   <EmptyListNoti />
-                    }
-                </DoContainer>
+                <Board setModalInfo={this.openModal} doList={doList} />
 
                 <DoModal    modalOpened={modalOpened} handleClose={this.closeModal} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
                             id={targetDo.id} name={targetDo.name} memo={targetDo.memo} updatedAt={targetDo.updatedAt}
@@ -206,18 +205,7 @@ const Title = styled.h1`
     color: #ac4b1c;
     `;
 
-const DoContainer = styled.div`
-    display : flex;
-    flex-direction : column;
-    justify-contents : center;
-    max-width : 50%;
 
-    padding : 10px;
-    margin : 30px 0; 
-    border-radius : 5px;
-
-    background : #ffefa0;
-    `;
 
 const Credit = styled.p`
     font-size : 1em;
