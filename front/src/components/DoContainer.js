@@ -29,7 +29,7 @@ const DoContainerWrap = styled.div`
     display : flex;
     flex-direction : column;
     justify-contents : center;
-    max-width : 50%;
+    
 
     padding : 10px;
     margin : 30px 0; 
