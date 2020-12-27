@@ -156,7 +156,7 @@ export default class App extends React.Component {
 
 
     render() {
-        const { isLoading, doList, modalData: { modalId, modalOpened } } = this.state;
+        const { isLoading, doList, boardType, modalData: { modalId, modalOpened } } = this.state;
 
         const targetDo = this.findDoById(modalId);
         //console.log('targetDO ',targetDo)
@@ -169,7 +169,7 @@ export default class App extends React.Component {
 
                 <DoMaker updateFormData={this.updateFormData} />
 
-                <Board setModalInfo={this.openModal} doList={doList} />
+                <Board setModalInfo={this.openModal} doList={doList} boardType={boardType} />
 
                 <DoModal    modalOpened={modalOpened} handleClose={this.closeModal} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
                             id={targetDo.id} name={targetDo.name} memo={targetDo.memo} updatedAt={targetDo.updatedAt}

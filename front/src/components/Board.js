@@ -8,11 +8,25 @@ import InfoBoard from "./InfoBoard";
 
 import DoContainer from "./DoContainer";
 
-export default function Board({setModalInfo, doList}) {
+export default function Board({setModalInfo, doList, boardType}) {
 
     return (
         <div className="Board">
-            <DoContainer setModalInfo={setModalInfo} doList={doList} />
+            {
+                (() => {
+                    if(boardType == "public"){
+                        return ( <PublicBoard setModalInfo={setModalInfo} doList={doList} /> );
+                    }  
+                    else if(boardType == "private"){
+                        return (  );
+                    }
+                    else if(boardType == "info"){
+                        return ( );
+                    }
+
+                })()
+            }
+            
         </div>
         
     );
