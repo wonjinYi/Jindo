@@ -6,28 +6,35 @@ import PublicBoard from "./PublicBoard";
 import PrivateBoard from "./PrivateBoard";
 import InfoBoard from "./InfoBoard";
 
-import DoContainer from "./DoContainer";
+//import DoContainer from "./DoContainer";
 
-export default function Board({setModalInfo, doList, boardType}) {
+export default function Board({setModalInfo, doList, boardType, userInfo}) {
 
     return (
-        <div className="Board">
+        <BoardWrap className="Board">
             {
                 (() => {
                     if(boardType == "public"){
                         return ( <PublicBoard setModalInfo={setModalInfo} doList={doList} /> );
                     }  
                     else if(boardType == "private"){
-                        return (  );
+                        return ( <PrivateBoard setModalInfo={setModalInfo} doList={doList} /> );
                     }
                     else if(boardType == "info"){
-                        return ( );
+                        return ( <InfoBoard /> );
                     }
 
                 })()
             }
-            
-        </div>
+        </BoardWrap>
         
     );
 }
+
+const BoardWrap = styled.div`
+    padding : 10px;
+    margin : 30px 0; 
+    border-radius : 5px;
+
+    background : #ffefa0;
+    `;
