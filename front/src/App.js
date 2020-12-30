@@ -109,7 +109,7 @@ export default class App extends React.Component {
     getDo = async () => {
         const { boardType } = this.state;
 
-        const { data } = await axios.get("https://jindoback.wonj.in/public_data")
+        const { data } = await axios.get("https://jindoback.wonj.in/public/data")
         console.log(data);
         this.setState({
             doList: data,
@@ -119,7 +119,7 @@ export default class App extends React.Component {
 
     createDo = async () => {
         const { formData } = this.state;
-        await axios.post("https://jindoback.wonj.in/create", formData);
+        await axios.post("https://jindoback.wonj.in/public/create", formData);
         await this.getDo();
     }
 
@@ -130,7 +130,7 @@ export default class App extends React.Component {
             memo,
         };
         
-        await axios.post("https://jindoback.wonj.in/edit", modalData);
+        await axios.post("https://jindoback.wonj.in/public/edit", modalData);
 
         await this.getDo();
     }
@@ -144,7 +144,7 @@ export default class App extends React.Component {
         this.setState({
             isLoading: true,
         });
-        await axios.post("https://jindoback.wonj.in/delete", { id: modalId });
+        await axios.post("https://jindoback.wonj.in/public/delete", { id: modalId });
 
         await this.getDo();
     }

@@ -10,10 +10,12 @@ const fs = require('fs');
 
 const { Op } = require('sequelize');
 const { sequelize } = require('./models');
-const { PublicBoard } = require('./models')
+const { PublicBoard } = require('./models');
+
 const dotenv = require('dotenv');
 dotenv.config();
 
+const STATE = String(Math.random());
 const sslport = 8000
 
 const app = express();
@@ -58,9 +60,9 @@ app.use('/', (req, res, next) => {
 
 app.get("/login/daldalso", (req, res, next) => {
     console.log("LOGIN REQUEST! (Daldalso)");
-    res.send("lnx");
+    res.redirect(`https://daldal.so/oauth/authorize?response_type=code&client_id=${process.env.DALDALSO_CLIENT_ID}&state=${STATE}&redirect_uri=${encodeURIComponent(process.env.DALDALSO_REDIRECT_URL)}`);
 })
-app.get("/login/daldalso/callback", (req, res, next) => {
+app.get("/login/daldalso/redirect", (req, res, next) => {
     console.log("Daldalso Oauth :: received data")
     res.send("아lnx적분하고싶다");
 })
