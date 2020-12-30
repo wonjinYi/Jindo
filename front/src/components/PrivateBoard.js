@@ -15,7 +15,7 @@ export default function PublicBoard({setModalInfo, doList, userInfo}) {
                     }
                     else {
                         return ( 
-                            <a href="https://wonj.in" target="_blank">
+                            <a href="https://jindoback.wonj.in/login/daldalso" target="_blank">
                                 <img src="https://daldal.so/media/images/oauth-button.png" />
                             </a>
                         );
