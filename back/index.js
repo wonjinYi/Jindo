@@ -56,7 +56,16 @@ app.use('/', (req, res, next) => {
     next();
 });
 
-app.get("/public_data", async (req, res, next) => {
+app.get("/login/daldalso", (req, res, next) => {
+    console.log("LOGIN REQUEST! (Daldalso)");
+    res.send("lnx");
+})
+app.get("/login/daldalso/callback", (req, res, next) => {
+    console.log("Daldalso Oauth :: received data")
+    res.send("아lnx적분하고싶다");
+})
+
+app.get("/public/data", async (req, res, next) => {
     const read = await PublicBoard.findAll({
         attributes : ['id', 'name', 'memo', 'updatedAt']
     });
@@ -68,7 +77,7 @@ app.get("/public_data", async (req, res, next) => {
     res.json(read);
 });
 
-app.post("/create", async (req, res, next) => {
+app.post("/public/create", async (req, res, next) => {
     const create = await PublicBoard.create({
         name : req.body.name,
         memo : req.body.memo,
@@ -81,7 +90,7 @@ app.post("/create", async (req, res, next) => {
     res.json(create);
 });
 
-app.post("/edit", async (req, res, next) => {
+app.post("/public/edit", async (req, res, next) => {
     const edit = await PublicBoard.update({
         name : req.body.name,
         memo : req.body.memo,
@@ -96,7 +105,7 @@ app.post("/edit", async (req, res, next) => {
     res.json(edit);
 });
 
-app.post("/delete", async (req, res, next) => {
+app.post("/public/delete", async (req, res, next) => {
     const del = await PublicBoard.destroy({
         where : { id : req.body.id },
     });
