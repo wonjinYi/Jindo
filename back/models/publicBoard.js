@@ -5,7 +5,7 @@ module.exports = class PublicBoard extends Sequelize.Model {
         return super.init({
             name : {
                 type : Sequelize.STRING(53),
-                allowNull : true,
+                allowNull : false,
             },
             memo : {
                 type : Sequelize.STRING(530),
@@ -22,8 +22,4 @@ module.exports = class PublicBoard extends Sequelize.Model {
             collate : 'utf8_general_ci',
         });
     }
-
-    // static associate(db){
-
-    // }
 }
