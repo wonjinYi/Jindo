@@ -73,8 +73,8 @@ app.get("/login/daldalso/redirect", async (req, res, next) => {
         let token;
         
         respond = await axios.post("https://daldal.so/oauth/token", {
-          client_id: CLIENT_ID,
-          client_secret: CLIENT_SECRET,
+          client_id: process.env.DALDALSO_CLIENT_ID,
+          client_secret: process.env.DALDALSO_KEY,
           grant_type: "authorization_code",
           code: req.query['code']
         });
