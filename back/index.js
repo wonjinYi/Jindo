@@ -7,6 +7,7 @@ const path = require('path');
 const session = require('express-session');
 const url = require('url');
 const fs = require('fs');
+const axios = require('axios');
 
 const { Op } = require('sequelize');
 const { sequelize } = require('./models');
@@ -62,8 +63,35 @@ app.get("/login/daldalso", (req, res, next) => {
     console.log("LOGIN REQUEST! (Daldalso)");
     res.redirect(`https://daldal.so/oauth/authorize?response_type=code&client_id=${process.env.DALDALSO_CLIENT_ID}&state=${STATE}&redirect_uri=${encodeURIComponent(process.env.DALDALSO_REDIRECT_URL)}`);
 })
-app.get("/login/daldalso/redirect", (req, res, next) => {
-    console.log("Daldalso Oauth :: received data")
+app.get("/login/daldalso/redirect", async (req, res, next) => {
+    if(req.query['state'] !== STATE){
+        res.send("뭐야 STATE값이 이상하잖아. 장난해?")
+        return;
+    }
+    try{
+        let respond;
+        let token;
+        
+        respond = await axios.post("https://daldal.so/oauth/token", {
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          grant_type: "authorization_code",
+          code: req.query['code']
+        });
+        token = respond.data['access_token'];
+        // 여기까지 왔다면 인증과정-4 성공
+    
+        respond = await axios.get("https://daldal.so/oauth/api/me", {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        res.send(JSON.stringify(respond.data));
+        // 여기까지 왔다면 인증과정-6 성공
+      }catch(e){
+        console.error(e);
+        res.sendStatus(500);
+      }
     res.send("아lnx적분하고싶다");
 })
 
