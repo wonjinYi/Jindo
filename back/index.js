@@ -1,9 +1,9 @@
 const express = require("express");
 const HTTPS = require('https');
 
-const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const url = require('url');
 const fs = require('fs');
@@ -12,6 +12,7 @@ const axios = require('axios');
 const { Op } = require('sequelize');
 const { sequelize } = require('./models');
 const { PublicBoard } = require('./models');
+const { PrivateBoard } = require('./models');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -48,7 +49,16 @@ app.set('port', process.env.PORT || 8000);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(session({
+	secret:process.env.COOKIE_SECRET,
+	resave:true,
+    saveUninitialize:true,
+    cookie : {
+        httpOnly : true,
+        secure : true,
+    },
+    name : "session-cookie",
+}));
 
 
 app.use('/', (req, res, next) => {
