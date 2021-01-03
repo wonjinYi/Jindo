@@ -109,7 +109,7 @@ export default class App extends React.Component {
     getDo = async () => {
         const { boardType } = this.state;
 
-        const { data } = await axios.get("https://jindoback.wonj.in/public/data")
+        const { data } = await axios.get("https://jindoback.wonj.in/public/data", { withCredentials: true })
         console.log(data);
         this.setState({
             doList: data,

@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 const url = require('url');
 const fs = require('fs');
 const axios = require('axios');
@@ -51,20 +52,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
 	secret:process.env.COOKIE_SECRET,
-	resave:true,
+	resave:false,
     saveUninitialize:true,
     cookie : {
-        httpOnly : true,
-        secure : true,
+         httpOnly : false,
+    //     //secure : true,
     },
-    name : "session-cookie",
+    // name : "session-cookie",
+    //store : new FileStore(),
 }));
 
 
 app.use('/', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization, Content-Length, X-Requested-With');
 
     next();
 });
@@ -75,7 +78,7 @@ app.get("/login/daldalso", (req, res, next) => {
 })
 app.get("/login/daldalso/redirect", async (req, res, next) => {
     if(req.query['state'] !== STATE){
-        res.send("뭐야 STATE값이 이상하잖아. 장난해?")
+        res.send("뭐야 STATE값이 이상하잖아?")
         return;
     }
     try{
@@ -96,13 +99,27 @@ app.get("/login/daldalso/redirect", async (req, res, next) => {
             'Authorization': `Bearer ${token}`
           }
         });
-        res.send(JSON.stringify(respond.data));
+        console.log(respond.data);
+        req.session.islogin = true;
+        console.log(req.session.islogin);
         // 여기까지 왔다면 인증과정-6 성공
       }catch(e){
         console.error(e);
         res.sendStatus(500);
-      }
-    res.send("아lnx적분하고싶다");
+    }
+    
+    res.redirect("http://localhost:3000/")
+    //res.send('dfdfdfdfdf');
+})
+
+app.get('/sessiontest', function (req, res, next) {
+    console.log(req.session);
+    if(req.session.num === undefined){
+        req.session.num = 1;
+    } else {
+        req.session.num =  req.session.num + 1;
+    }
+    res.send(`Views : ${req.session.num}`);
 })
 
 app.get("/public/data", async (req, res, next) => {
@@ -113,6 +130,15 @@ app.get("/public/data", async (req, res, next) => {
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
     console.log("Read DONE");
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
+    //console.log(req.session);
+    //console.log(req.session.islogin, req.session.test);
+    console.log(req.session);
+    console.log(req.session.id);
+    if(req.session.num === undefined){
+        req.session.num = 1;
+    } else {
+        req.session.num =  req.session.num + 1;
+    }
 
     res.json(read);
 });
