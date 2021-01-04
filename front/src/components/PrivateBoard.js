@@ -4,13 +4,13 @@ import React from "react";
 
 import DoContainer from "./DoContainer";
 
-export default function PublicBoard({setModalInfo, doList, userInfo}) {
+export default function PublicBoard({setModalInfo, doList, sessionID}) {
 
     return (
         <div className="PublicBoard">
             {
                 (() => {
-                    if(userInfo != null){
+                    if(sessionID != null){
                         return ( <DoContainer setModalInfo={setModalInfo} doList={doList} /> );
                     }
                     else {
