@@ -9,6 +9,7 @@ const FileStore = require('session-file-store')(session);
 const url = require('url');
 const fs = require('fs');
 const axios = require('axios');
+const cors = require('cors');
 
 const { Op } = require('sequelize');
 const { sequelize } = require('./models');
@@ -50,22 +51,29 @@ app.set('port', process.env.PORT || 8000);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/', (req, res, next) => {
+    console.log("pre session" , req.session);
+    next();
+});
 app.use(session({
 	secret:process.env.COOKIE_SECRET,
 	resave:false,
     saveUninitialize:true,
     cookie : {
          httpOnly : false,
+         sameSite:'none',
+         maxAge : 5300000,
     //     //secure : true,
     },
     // name : "session-cookie",
-    //store : new FileStore(),
+    // store : new FileStore(),
 }));
-
+// s%3AqqvqLcIp6AJM0XH3Wp0E9rTMdnoZ_qZx.ebtGuJHLe29a5gMH5DGdN%2BeC5VaydMk%2FEcWRPHliyRw
 
 app.use('/', (req, res, next) => {
-    res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization, Content-Length, X-Requested-With');
 
@@ -112,14 +120,16 @@ app.get("/login/daldalso/redirect", async (req, res, next) => {
     //res.send('dfdfdfdfdf');
 })
 
-app.get('/sessiontest', function (req, res, next) {
+app.post('/sessiontest', function (req, res, next) {
     console.log(req.session);
     if(req.session.num === undefined){
         req.session.num = 1;
     } else {
         req.session.num =  req.session.num + 1;
     }
-    res.send(`Views : ${req.session.num}`);
+    console.log(req.session);
+    console.log(req.session.id);
+    res.send('ghi');
 })
 
 app.get("/public/data", async (req, res, next) => {
@@ -130,15 +140,6 @@ app.get("/public/data", async (req, res, next) => {
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
     console.log("Read DONE");
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
-    //console.log(req.session);
-    //console.log(req.session.islogin, req.session.test);
-    console.log(req.session);
-    console.log(req.session.id);
-    if(req.session.num === undefined){
-        req.session.num = 1;
-    } else {
-        req.session.num =  req.session.num + 1;
-    }
 
     res.json(read);
 });
