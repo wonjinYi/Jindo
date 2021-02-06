@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Jindo/static/css/main.e34190aa.chunk.css",
-    "main.js": "/Jindo/static/js/main.4717ecfc.chunk.js",
-    "main.js.map": "/Jindo/static/js/main.4717ecfc.chunk.js.map",
+    "main.js": "/Jindo/static/js/main.2351bce4.chunk.js",
+    "main.js.map": "/Jindo/static/js/main.2351bce4.chunk.js.map",
     "runtime-main.js": "/Jindo/static/js/runtime-main.3191294b.js",
     "runtime-main.js.map": "/Jindo/static/js/runtime-main.3191294b.js.map",
     "static/js/2.3f305c12.chunk.js": "/Jindo/static/js/2.3f305c12.chunk.js",
@@ -16,6 +16,6 @@
     "static/js/runtime-main.3191294b.js",
     "static/js/2.3f305c12.chunk.js",
     "static/css/main.e34190aa.chunk.css",
-    "static/js/main.4717ecfc.chunk.js"
+    "static/js/main.2351bce4.chunk.js"
   ]
 }
