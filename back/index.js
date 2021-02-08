@@ -51,10 +51,7 @@ app.set('port', process.env.PORT || 8000);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/', (req, res, next) => {
-    console.log("pre session" , req.session);
-    next();
-});
+
 app.use(session({
 	secret:process.env.COOKIE_SECRET,
 	resave:false,
@@ -68,17 +65,28 @@ app.use(session({
     // name : "session-cookie",
     // store : new FileStore(),
 }));
-// s%3AqqvqLcIp6AJM0XH3Wp0E9rTMdnoZ_qZx.ebtGuJHLe29a5gMH5DGdN%2BeC5VaydMk%2FEcWRPHliyRw
 
 app.use('/', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.header('Access-Control-Allow-Credentials', 'true');
+    console.log("pre session" , req.session.id);
+    next();
+});
+
+/*
+app.use('/', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://wonjinyi.github.io');
+    res.header('Access-Control-Allow-Credentials', true);
 
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization, Content-Length, X-Requested-With');
 
     next();
-});
+});*/
+const corsOptions = {
+    origin: true,
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 
 app.get("/login/daldalso", (req, res, next) => {
     console.log("LOGIN REQUEST! (Daldalso)");
@@ -122,10 +130,14 @@ app.get("/login/daldalso/redirect", async (req, res, next) => {
 
 app.post('/sessiontest', function (req, res, next) {
     console.log(req.session);
-    if(req.session.num === undefined){
+    console.log(req.session.id);
+    console.log(req.session.num == undefined);
+    if(req.session == undefined){
         req.session.num = 1;
+        console.log(req.session.num);
     } else {
         req.session.num =  req.session.num + 1;
+        console.log(req.session.num);
     }
     console.log(req.session);
     console.log(req.session.id);
