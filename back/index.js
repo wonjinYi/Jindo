@@ -150,8 +150,10 @@ app.get('/islogin', function (req, res, next) {
 })
 app.get('/logout', function (req, res, next) {
     console.log(req.session.id);
+    const target = SESSION_LIST.find( el => (el.id === req.session.id) );
     req.session.destroy( function(req, res, next) {
         //console.log(req.session.id);
+        SESSION_LIST.splice(target,1);
         console.log(' ㄴ logout !');
     });
 
@@ -283,6 +285,14 @@ app.post("/private/delete", async (req, res, next) => {
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+// app.use("/hihihi", async (req, res) => {
+//     const create = await PrivateBoard.create({
+//         name : 'NAME_TEST',
+//         email : 'TEST@wonj.in',
+//         memo : 'MEMO_TEST',
+//     });
+//     res.end();
+// })
 
 app.use("/info", (req, res, next) => {
     res.send([]);
@@ -299,3 +309,4 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.send('error');
 });
+
