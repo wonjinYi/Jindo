@@ -160,7 +160,7 @@ app.get('/logout', function (req, res, next) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.get("/public/data", async (req, res, next) => {
+app.get("/public/read", async (req, res, next) => {
     const read = await PublicBoard.findAll({
         attributes : ['id', 'name', 'memo', 'updatedAt']
     });
