@@ -33,8 +33,6 @@ export default class App extends React.Component {
 
         boardType : 'public', // public, private, info
         doList : [],
-
-        sessionID : null,
     };
 
     openModal = (id) => {
@@ -80,17 +78,18 @@ export default class App extends React.Component {
         this.setState({ boardType : type });
         console.log("boardtype : ",type);
 
-        this.setState({ isLoading: true });
-        this.getDo();
+        this.setState({ 
+            isLoading: true 
+        }, this.getDo);
     }
     
     findDoById = (modalId) => {
         const { doList } = this.state;
 
-        const isTarget = (el) => el.id == modalId;
+        const isTarget = (el) => el.id === modalId;
         const targetIndex = doList.findIndex(isTarget);
 
-        if ( targetIndex != -1 ){
+        if ( targetIndex !== -1 ){
             const targetDo = doList[targetIndex]
             return targetDo;
         } else {
@@ -107,9 +106,10 @@ export default class App extends React.Component {
     // API request
     getDo = async () => {
         const { boardType } = this.state;
+        const { data } = await axios.get(`https://jindoback.wonj.in/${boardType}/read`, { withCredentials: true })
 
-        const { data } = await axios.get("https://jindoback.wonj.in/public/data", { withCredentials: true })
         console.log(data);
+
         this.setState({
             doList: data,
             isLoading: false,
@@ -155,10 +155,9 @@ export default class App extends React.Component {
 
 
     render() {
-        const { isLoading, doList, boardType, sessionID, modalData: { modalId, modalOpened } } = this.state;
+        const { isLoading, doList, boardType, modalData: { modalId, modalOpened } } = this.state;
 
-        const targetDo = this.findDoById(modalId);
-        //console.log('targetDO ',targetDo)
+        
         
         return (
             <AppWrap className="App">
@@ -168,11 +167,21 @@ export default class App extends React.Component {
 
                 <DoMaker updateFormData={this.updateFormData} />
 
-                <Board setModalInfo={this.openModal} doList={doList} boardType={boardType} sessionID={sessionID} />
-
-                <DoModal    modalOpened={modalOpened} handleClose={this.closeModal} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
-                            id={targetDo.id} name={targetDo.name} memo={targetDo.memo} updatedAt={targetDo.updatedAt}
-                />
+                <Board setModalInfo={this.openModal} doList={doList} boardType={boardType}/>
+                
+                {
+                    (() => {
+                        if ( modalOpened ){
+                            const targetDo = this.findDoById(modalId);
+                            return (
+                                <DoModal    modalOpened={modalOpened} handleClose={this.closeModal} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
+                                            id={targetDo.id} name={targetDo.name} memo={targetDo.memo} updatedAt={targetDo.updatedAt}
+                                />
+                            );
+                        }
+                    })()
+                }
+                
 
                 <Credit>Wonjin Yi</Credit>
 
@@ -203,8 +212,6 @@ const Title = styled.h1`
     background: #fca652;
     color: #ac4b1c;
     `;
-
-
 
 const Credit = styled.p`
     font-size : 1em;
