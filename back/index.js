@@ -140,13 +140,13 @@ app.post('/sessiontest', function (req, res, next) {
 app.get('/islogin', function (req, res, next) {
     console.log(req.session.id);
     console.log(req.session.islogin);
-    if( req.session.islogin === true ){
-        res.send(true);
-    }
-    else {
-        res.send(false);
-    }
     
+    const target = SESSION_LIST.find( el => (el.id === req.session.id) );
+    if ( target !== -1 ){
+        res.send(true);
+    } else {
+        res.end(false);
+    }
 })
 app.get('/logout', function (req, res, next) {
     console.log(req.session.id);
