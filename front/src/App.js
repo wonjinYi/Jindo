@@ -106,9 +106,16 @@ export default class App extends React.Component {
     // API request
     getDo = async () => {
         const { boardType } = this.state;
-        const { data } = await axios.get(`https://jindoback.wonj.in/${boardType}/read`, { withCredentials: true })
+        if( boardType === null ){
+            return 0;
+        }
 
+        const { data } = await axios.get(`https://jindoback.wonj.in/${boardType}/read`, { withCredentials: true })
         console.log(data);
+        if(data==='error'){ 
+            this.setState({ isLoading : false });
+            return 0; 
+        }
 
         this.setState({
             doList: data,
@@ -117,19 +124,21 @@ export default class App extends React.Component {
     }
 
     createDo = async () => {
-        const { formData } = this.state;
-        await axios.post("https://jindoback.wonj.in/public/create", formData);
+        const { formData, boardType } = this.state;
+        await axios.post(`https://jindoback.wonj.in/${boardType}/create`, formData, {withCredentials : true});
         await this.getDo();
     }
 
     editDo = async (id, name, memo) => {
+        const { boardType } = this.state;
+
         const modalData = {
             id,
             name,
             memo,
         };
         
-        await axios.post("https://jindoback.wonj.in/public/edit", modalData);
+        await axios.post(`https://jindoback.wonj.in/${boardType}/edit`, modalData, {withCredentials : true});
 
         await this.getDo();
     }
@@ -137,13 +146,13 @@ export default class App extends React.Component {
     deleteDo = async () => {
         const { modalData: {
             modalId
-        } } = this.state;
+        }, boardType } = this.state;
 
         this.closeModal();
         this.setState({
             isLoading: true,
         });
-        await axios.post("https://jindoback.wonj.in/public/delete", { id: modalId });
+        await axios.post(`https://jindoback.wonj.in/${boardType}/delete`, { id: modalId }, {withCredentials : true});
 
         await this.getDo();
     }
