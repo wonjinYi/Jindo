@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 
 import { withStyles } from '@material-ui/core/styles';
@@ -9,16 +9,21 @@ import PublicIcon from '@material-ui/icons/Public';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InfoIcon from '@material-ui/icons/Info';
 
-export default function IconLabelTabs({updateBoardType}) {
-  const [value, setValue] = React.useState(initValue());
-  const boardTypeDefine = ['public', 'private', 'info'];
+const boardTypeDefine = ['public', 'private', 'info'];
 
-  const handleChange = (event, newValue) => {
+export default function IconLabelTabs({updateBoardType}) {
+  
+  const [value, setValue] = React.useState( initBoardType() );
+  
+  const handleChange = (e, newValue) => {
     setValue(newValue);
     localStorage.setItem('boardType', newValue)
-
-    updateBoardType(boardTypeDefine[newValue]);
   };
+
+  useEffect( () => {
+    updateBoardType(boardTypeDefine[value]);
+  }, [value]);
+  
 
   return (
     <BoardSelectorWrap>
@@ -36,18 +41,20 @@ export default function IconLabelTabs({updateBoardType}) {
   );
 }
 
-function initValue() {
+function initBoardType () {
   const boardType = localStorage.getItem('boardType');
   console.log('init : ', boardType);
 
   if ( boardType ){
+    //updateBoardType(boardTypeDefine[boardType]);
     return parseInt(boardType);
   } else {
     return 0; // public
   }
-  
 }
 
+
+// style
 const BoardSelectorWrap = styled.div`
   margin-bottom : 30px;
   `;
