@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
 
-import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -9,9 +8,6 @@ import Tab from '@material-ui/core/Tab';
 import PublicIcon from '@material-ui/icons/Public';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InfoIcon from '@material-ui/icons/Info';
-
-
-
 
 export default function IconLabelTabs({updateBoardType}) {
   const [value, setValue] = React.useState(0);
@@ -29,8 +25,7 @@ export default function IconLabelTabs({updateBoardType}) {
           value={value}
           onChange={handleChange}
           variant="fullWidth"
-
-          aria-label="icon label tabs example"
+          aria-label="board selector"
         >
           <SelectTab icon={<PublicIcon />} label="Public" />
           <SelectTab icon={<AccountCircleIcon />} label="Private" />
@@ -42,7 +37,6 @@ export default function IconLabelTabs({updateBoardType}) {
 
 const BoardSelectorWrap = styled.div`
   margin-bottom : 30px;
-  
   `;
 
 const SelectTabs = withStyles({
@@ -51,9 +45,6 @@ const SelectTabs = withStyles({
     maxWidth : 500,
     backgroundColor : '#FFEFA0',
     borderRadius : '10px',
-    // '& > span': {
-    //   backgroundColor : '#FCA652',
-    // }
   },
   indicator : {
     backgroundColor : '#FCA652',
@@ -65,20 +56,10 @@ const SelectTab = withStyles({
     color : '#4A4A4A',
     backgroundColor : '#FFEFA0',
     transition : 'background-color 1s',
-    // '&:hover' : {
-    //   backgroundColor : '#fca958',
-    //   color : '#ffffff',
-    //   transition : 'all 0.5s',
-    // },
-
   },
   disabled : {
- 
   },
   selected : {
-    //color : '#ffffff',
     backgroundColor: '#FCA652',
   },
 })(Tab);
-
-//https://material-ui.com/components/tabs/
