@@ -31,7 +31,7 @@ export default class App extends React.Component {
             modalOpened: false,
         },
 
-        boardType : 'public', // public, private, info
+        boardType : null, // public, private, info
         doList : [],
     };
 
@@ -157,8 +157,6 @@ export default class App extends React.Component {
     render() {
         const { isLoading, doList, boardType, modalData: { modalId, modalOpened } } = this.state;
 
-        
-        
         return (
             <AppWrap className="App">
                 <Title className="title">Jindo</Title>

@@ -1,27 +1,25 @@
 // library, frameworks.
 import Axios from "axios";
 import { React, useState } from "react";
-//import styled from "styled-components";
 
+// components.
 import DoContainer from "./DoContainer";
 
 export default function PrivateBoard({ setModalInfo, doList }) {
 
-    const [islogin, setIsLogin] = useState(false);
-    updateIsLogin(setIsLogin);
-    console.log(islogin);
+    const [islogin, setIslogin] = useState( updateIslogin() );
 
     return (
         <div className="PrivateBoard">
             {
                 islogin
                 ?   (<div className="Private-innerwrap">
-                        <a onClick={ () => { handleLogout(setIsLogin) } }> LOGOUT </a>
+                        <span onClick={ () => { handleLogout(setIslogin) } }> LOGOUT </span>
                         <DoContainer setModalInfo={setModalInfo} doList={doList} />
                     </div>)
                     
                 :   (<a href="https://jindoback.wonj.in/login/daldalso">
-                        <img src="https://daldal.so/media/images/oauth-button.png" />
+                        <img src="https://daldal.so/media/images/oauth-button.png" alt="daldalso-Login" />
                     </a>)
             }
 
@@ -30,15 +28,15 @@ export default function PrivateBoard({ setModalInfo, doList }) {
     );
 }
 
-async function updateIsLogin(setIsLogin) {
+async function updateIslogin() {
     const { data } = await Axios.get('https://jindoback.wonj.in/islogin', {withCredentials : true});
-    setIsLogin(data);
-
     console.log('updateIsLogin : ', data);
+
+    return data;
 }
 
-function handleLogout(setIsLogin) {
+function handleLogout(setIslogin) {
     const { data } = Axios.get('https://jindoback.wonj.in/logout', {withCredentials : true});
-    updateIsLogin(setIsLogin);
+    updateIslogin(setIslogin);
     console.log('handleLogout : ', data);
 }
