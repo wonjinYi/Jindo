@@ -30,11 +30,9 @@ try {
         key: fs.readFileSync('keys/jindoback.wonj.in.key.pem'),
         cert: fs.readFileSync('keys/jindoback.wonj.in.crt.pem')
     };
-
     HTTPS.createServer(option, app).listen(sslport, () => {
         console.log(`[HTTPS] Jindo Server is started on port ${sslport}`);
     });
-
 } catch (error) {
     console.log(error);
 }
@@ -73,14 +71,16 @@ app.use(cors(corsOptions));
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.get("/", (req, res, next) => {
-    console.log(req.session.id);
-    console.log(req.session.data)
-})
+// app.get("/", (req, res, next) => {
+//     console.log(req.session.id);
+//     console.log(req.session.data)
+// })
+
 app.get("/login/daldalso", (req, res, next) => {
     console.log("LOGIN REQUEST! (Daldalso)");
     res.redirect(`https://daldal.so/oauth/authorize?response_type=code&client_id=${process.env.DALDALSO_CLIENT_ID}&state=${STATE}&redirect_uri=${encodeURIComponent(process.env.DALDALSO_REDIRECT_URL)}`);
 })
+
 app.get("/login/daldalso/redirect", async (req, res, next) => {
     if(req.query['state'] !== STATE){
         res.send("뭐야 STATE값이 이상하잖아?")
@@ -109,12 +109,12 @@ app.get("/login/daldalso/redirect", async (req, res, next) => {
         req.session.islogin = true;
         SESSION_LIST.push({
             id : req.session.id, 
-            namd : respond.data.name,
+            name : respond.data.name,
             email : respond.data.account,
         });
 
         console.log(SESSION_LIST);
-            // 여기까지 왔다면 인증과정-6 성공
+        // 여기까지 왔다면 인증과정-6 성공
         } catch(e) {
             console.error(e);
             res.sendStatus(500);
@@ -123,36 +123,24 @@ app.get("/login/daldalso/redirect", async (req, res, next) => {
     res.redirect("http://localhost:3000/")
 })
 
-app.post('/sessiontest', function (req, res, next) {
-    console.log(req.session.id);
-    console.log(req.session.islogin);
-    if(req.session.num == undefined){
-        req.session.num = 1;
-    } else {
-        req.session.num =  req.session.num + 1;
-        console.log(req.session.num);
-    }
-    console.log(req.session.num);
-
-    res.send(req.session.id);
-});
-
 app.get('/islogin', function (req, res, next) {
     console.log(req.session.id);
-    console.log(req.session.islogin);
-    
-    const target = SESSION_LIST.find( el => (el.id === req.session.id) );
+
+    const target = SESSION_LIST.findIndex( el => (el.id === req.session.id) );
+    console.log('target : ',target);
+    console.log(SESSION_LIST);
     if ( target !== -1 ){
         res.send(true);
     } else {
-        res.end(false);
+        res.send(false);
     }
 })
+
 app.get('/logout', function (req, res, next) {
     console.log(req.session.id);
-    const target = SESSION_LIST.find( el => (el.id === req.session.id) );
+
+    const target = SESSION_LIST.findIndex( el => (el.id === req.session.id) );
     req.session.destroy( function(req, res, next) {
-        //console.log(req.session.id);
         SESSION_LIST.splice(target,1);
         console.log(' ㄴ logout !');
     });
@@ -218,17 +206,24 @@ app.post("/public/delete", async (req, res, next) => {
 
 // login check
 app.use("/private", (req, res, next) => {
-    const target = SESSION_LIST.find( el => (el.id === req.session.id) );
+    const target = SESSION_LIST.findIndex( el => (el.id === req.session.id) );
     if ( target === -1 ) {
-        res.send('need login');
+        res.send('error');
     } else {
         next();
     }
 })
 
 app.get("/private/read", async (req, res) => {
+    // 현재 요청이 들어온 세션이 SESSION_LIST에서 몇 번째인지 찾기 (인덱스)
+    const target = SESSION_LIST.findIndex( el => (el.id === req.session.id) );
+    
     const read = await PrivateBoard.findAll({
-        attributes : ['id', 'name', 'memo', 'updatedAt']
+        attributes : ['id', 'name', 'memo', 'updatedAt'],
+        where : { 
+            name : SESSION_LIST[target].name,
+            email : SESSION_LIST[target].email,
+        },
     });
 
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
@@ -239,11 +234,7 @@ app.get("/private/read", async (req, res) => {
 })
 
 app.post("/private/create", async (req, res, next) => {
-    // 현재 요청이 들어온 세션이 SESSION_LIST에서 몇 번째인지 찾기 (인덱스)
-    const target = SESSION_LIST.find( el => (el.id === req.session.id) );
-    if ( target === -1 ) {
-        res.send('need login');
-    }
+    const target = SESSION_LIST.findIndex( el => (el.id === req.session.id) );
 
     const create = await PrivateBoard.create({
         name : SESSION_LIST[target].name,
@@ -259,10 +250,16 @@ app.post("/private/create", async (req, res, next) => {
 });
 
 app.post("/private/edit", async (req, res, next) => {
+    const target = SESSION_LIST.findIndex( el => (el.id === req.session.id) );
+
     const edit = await PrivateBoard.update({
         memo : req.body.memo,
     }, {
-        where : { id : req.body.id },
+        where : { 
+            id : req.body.id,
+            name : SESSION_LIST[target].name,
+            email : SESSION_LIST[target].email,
+        },
     });
 
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
@@ -273,8 +270,14 @@ app.post("/private/edit", async (req, res, next) => {
 });
 
 app.post("/private/delete", async (req, res, next) => {
+    const target = SESSION_LIST.findIndex( el => (el.id === req.session.id) );
+
     const del = await PrivateBoard.destroy({
-        where : { id : req.body.id },
+        where : { 
+            id : req.body.id,
+            name : SESSION_LIST[target].name,
+            email : SESSION_LIST[target].email,
+        },
     });
 
     console.log("--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--ㅇ--")
@@ -285,14 +288,6 @@ app.post("/private/delete", async (req, res, next) => {
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// app.use("/hihihi", async (req, res) => {
-//     const create = await PrivateBoard.create({
-//         name : 'NAME_TEST',
-//         email : 'TEST@wonj.in',
-//         memo : 'MEMO_TEST',
-//     });
-//     res.end();
-// })
 
 app.use("/info", (req, res, next) => {
     res.send([]);
