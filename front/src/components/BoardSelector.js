@@ -10,11 +10,12 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InfoIcon from '@material-ui/icons/Info';
 
 export default function IconLabelTabs({updateBoardType}) {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(initValue());
   const boardTypeDefine = ['public', 'private', 'info'];
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    localStorage.setItem('boardType', newValue)
 
     updateBoardType(boardTypeDefine[newValue]);
   };
@@ -33,6 +34,18 @@ export default function IconLabelTabs({updateBoardType}) {
         </SelectTabs>
     </BoardSelectorWrap>
   );
+}
+
+function initValue() {
+  const boardType = localStorage.getItem('boardType');
+  console.log('init : ', boardType);
+
+  if ( boardType ){
+    return parseInt(boardType);
+  } else {
+    return 0; // public
+  }
+  
 }
 
 const BoardSelectorWrap = styled.div`
