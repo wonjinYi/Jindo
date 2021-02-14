@@ -2,6 +2,12 @@
 import Axios from "axios";
 import { React, useEffect, useState } from "react";
 
+import styled from "styled-components";
+
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 // components.
 import DoContainer from "./DoContainer";
 import EmptyListNoti from "./EmptyListNoti";
@@ -22,18 +28,20 @@ export default function PrivateBoard({ setModalInfo, doList }) {
                 (() => {
                     if ( islogin === true ){
                         return (
-                            <div className="Private-innerwrap">
-                                <span onClick={ () => { handleLogout(setIslogin) } }> LOGOUT </span>
+                            <PrivateBoardWrap>
+                                <Tooltip title="Logout" placement="left">
+                                    <IconButton onClick={ () => { handleLogout(setIslogin) }}><ExitToAppIcon /></IconButton>
+                                </Tooltip>
                                 <DoContainer setModalInfo={setModalInfo} doList={doList} />
-                            </div>
+                            </PrivateBoardWrap>
                         );
                     } else if ( islogin === false ) {
                         return (
-                            <div className="Private-innerwrap">
+                            <PrivateBoardWrap>
                                 <a href="https://jindoback.wonj.in/login/daldalso">
                                     <img src="https://daldal.so/media/images/oauth-button.png" alt="daldalso-Login" />
                                 </a>
-                            </div>
+                            </PrivateBoardWrap>
                         );
                     } else {
                         return (<EmptyListNoti />);
@@ -48,14 +56,16 @@ export default function PrivateBoard({ setModalInfo, doList }) {
 
 async function updateIslogin() {
     const { data } = await Axios.get('https://jindoback.wonj.in/islogin', {withCredentials : true})
-
-    console.log('updateIsLogin : ', data, typeof data, '    ', data===true, data===false);
-    
     return data;
 }
 
 function handleLogout(setIslogin) {
     const { data } = Axios.get('https://jindoback.wonj.in/logout', {withCredentials : true});
     setIslogin(false);
-    console.log('handleLogout : ', data);
 }
+
+const PrivateBoardWrap = styled.div`
+    display : flex;
+    flex-direction : column;
+    align-items : flex-end;
+    `;
