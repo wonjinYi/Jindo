@@ -181,7 +181,7 @@ export default class App extends React.Component {
                         if ( modalOpened ){
                             const targetDo = this.findDoById(modalId);
                             return (
-                                <DoModal    modalOpened={modalOpened} handleClose={this.closeModal} deleteDo={this.deleteDo} updateFormData={this.updateFormData}
+                                <DoModal    modalOpened={modalOpened} handleClose={this.closeModal} deleteDo={this.deleteDo} updateFormData={this.updateFormData} boardType={boardType}
                                             id={targetDo.id} name={targetDo.name} memo={targetDo.memo} updatedAt={targetDo.updatedAt}
                                 />
                             );

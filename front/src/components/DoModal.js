@@ -32,7 +32,7 @@ const giveUpdatedFormData = (setEditmode, updateFormData, id, modalName, modalMe
     } 
 }
 
-export default function SimpleModal({modalOpened, handleClose, deleteDo, updateFormData, id, name, memo, updatedAt}) {
+export default function SimpleModal({modalOpened, handleClose, deleteDo, updateFormData, boardType, id, name, memo, updatedAt}) {
     const classes = useStyles();
     
     const [editmode, setEditmode] = useState(false);
@@ -42,8 +42,8 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
     useEffect( () => { setModalName(name) }, [name])
     useEffect( () => { setModalMemo(memo) }, [memo])
 
-
     const parsedUpdatedAt = updatedAt.substring(0,10) + ' ' + updatedAt.substring(11,16);
+    const isDisabled = ((boardType === "private") ? true : false);
 
     const viewBody = (
         <ModalBody className={classes.paper}>
@@ -63,7 +63,9 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
     const editBody = (
         <ModalBody className={classes.paper}>
             <ContentWrap>
-                <BrownBorderTextField value={modalName} onChange={ (e) => { setModalName(e.target.value) } } 
+                <BrownBorderTextField 
+                    disabled={isDisabled}
+                    value={modalName} onChange={ (e) => { setModalName(e.target.value) } } 
                     id="input-name" label="Who" variant="outlined" margin="dense" fullWidth
                 />
                 <TextValidator>{ ( modalName.length>(raro) ) ? "↑ 53 Characters or less" : "" }</TextValidator>
