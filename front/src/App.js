@@ -76,7 +76,7 @@ export default class App extends React.Component {
 
     updateBoardType = (type) => {
         this.setState({ boardType : type });
-        console.log("boardtype : ",type);
+        //console.log("boardtype : ", type);
 
         this.setState({ 
             isLoading: true 
@@ -111,7 +111,7 @@ export default class App extends React.Component {
         }
 
         const { data } = await axios.get(`https://jindoback.wonj.in/${boardType}/read`, { withCredentials: true })
-        console.log(data);
+        //console.log(data);
         if(data==='error'){ 
             this.setState({ isLoading : false });
             return 0; 
@@ -172,7 +172,7 @@ export default class App extends React.Component {
 
                 <BoardSelector updateBoardType={this.updateBoardType} />
 
-                <DoMaker updateFormData={this.updateFormData} />
+                <DoMaker updateFormData={this.updateFormData} boardType={boardType} />
 
                 <Board setModalInfo={this.openModal} doList={doList} boardType={boardType}/>
                 
