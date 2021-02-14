@@ -22,7 +22,7 @@ export default function IconLabelTabs({updateBoardType}) {
 
   useEffect( () => {
     updateBoardType(boardTypeDefine[value]);
-  }, [value]);
+  }, [value, updateBoardType]);
   
 
   return (
@@ -43,10 +43,9 @@ export default function IconLabelTabs({updateBoardType}) {
 
 function initBoardType () {
   const boardType = localStorage.getItem('boardType');
-  console.log('init : ', boardType);
+  // console.log('init : ', boardType);
 
-  if ( boardType ){
-    //updateBoardType(boardTypeDefine[boardType]);
+  if ( boardType ) {
     return parseInt(boardType);
   } else {
     return 0; // public

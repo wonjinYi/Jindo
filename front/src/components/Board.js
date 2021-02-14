@@ -14,13 +14,13 @@ export default function Board({setModalInfo, doList, boardType}) {
         <BoardWrap className="Board">
             {
                 (() => {
-                    if(boardType == "public"){
+                    if(boardType === "public"){
                         return ( <PublicBoard setModalInfo={setModalInfo} doList={doList} /> );
                     }  
-                    else if(boardType == "private"){
+                    else if(boardType === "private"){
                         return ( <PrivateBoard setModalInfo={setModalInfo} doList={doList} /> );
                     }
-                    else if(boardType == "info"){
+                    else if(boardType === "info"){
                         return ( <InfoBoard /> );
                     }
 

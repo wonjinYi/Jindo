@@ -29,18 +29,17 @@ export default class DoMaker extends React.Component { // updateFormData, boardT
 
 		const { name, memo } = this.state;
 		const isDisabled = ((this.props.boardType === "private") ? true : false);
-		console.log(this.props.boardType, isDisabled, this.props.boardType === "private");
 
 		return (
 			<DoMakerWrap className="DoMaker">
 				<BrownBorderTextField
 					disabled={isDisabled}
 					value={name} onChange={(e) => { this.setState({ name: e.target.value }); }}
-					id="input-name" label="Who" variant="outlined" margin="dense" defaultValue="WHO"
+					id="input-name" label="Who" variant="outlined" margin="dense"
 				/>
 				<TextValidator>{(name.length > (raro)) ? "↑ 53 Characters or less" : ""}</TextValidator>
 				<BrownBorderTextField value={memo} onChange={(e) => { this.setState({ memo: e.target.value }); }}
-					id="input-memo" label="What" variant="outlined" margin="dense" defaultValue="WHAT"
+					id="input-memo" label="What" variant="outlined" margin="dense"
 				/>
 				<TextValidator>{(memo.length > (raro * 10)) ? "↑ 530 Characters or less" : ""}</TextValidator>
 				<DooButton onClick={this.giveUpdatedFormData} variant="contained" disableElevation><AddCircleOutlineIcon /></DooButton>

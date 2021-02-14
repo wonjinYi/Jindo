@@ -15,12 +15,13 @@ import EmptyListNoti from "./EmptyListNoti";
 export default function PrivateBoard({ setModalInfo, doList }) {
 
     const [islogin, setIslogin] = useState(0);
-    useEffect( async () => {
-        console.log('useffect');
-        const res = await updateIslogin();
-        setIslogin(res);
-    }, [islogin])
-    //setIslogin( updateIslogin );
+    useEffect( () => {
+        async function update() {
+            const res = await updateIslogin();
+            setIslogin(res);
+        }
+        update();
+    }, [islogin]);
 
     return (
         <div className="PrivateBoard">
@@ -60,7 +61,7 @@ async function updateIslogin() {
 }
 
 function handleLogout(setIslogin) {
-    const { data } = Axios.get('https://jindoback.wonj.in/logout', {withCredentials : true});
+    Axios.get('https://jindoback.wonj.in/logout', {withCredentials : true});
     setIslogin(false);
 }
 
