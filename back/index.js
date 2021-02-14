@@ -120,7 +120,8 @@ app.get("/login/daldalso/redirect", async (req, res, next) => {
             res.sendStatus(500);
         }
     
-    res.redirect("http://localhost:3000/")
+    res.redirect("https://wonjinyi.github.io/Jindo");
+    //res.redirect("http://localhost:3000/")
 })
 
 app.get('/islogin', function (req, res, next) {
