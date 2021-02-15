@@ -39,9 +39,6 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
     const [modalName, setModalName] = useState(name);
     const [modalMemo, setModalMemo] = useState(memo);
 
-    useEffect( () => { setModalName(name) }, [name])
-    useEffect( () => { setModalMemo(memo) }, [memo])
-
     const parsedUpdatedAt = updatedAt.substring(0,10) + ' ' + updatedAt.substring(11,16);
     const isDisabled = ((boardType === "private") ? true : false);
 
@@ -49,12 +46,12 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
         <ModalBody className={classes.paper}>
             <ContentWrap>
                 <p>{ parsedUpdatedAt }</p>
-                <Name>{ modalName }</Name>
-                <Memo>{ modalMemo }</Memo>
+                <Name>{ name }</Name>
+                <Memo>{ memo }</Memo>
             </ContentWrap>  
              
             <Menu>
-                <IconButton onClick={ () => setEditmode(true) }><EditIcon /></IconButton>
+                <IconButton onClick={ () => { setEditmode(true); } }><EditIcon /></IconButton>
                 <IconButton onClick={deleteDo}><DeleteForeverIcon /></IconButton>
             </Menu>
         </ModalBody>
@@ -98,8 +95,6 @@ export default function SimpleModal({modalOpened, handleClose, deleteDo, updateF
     );
 }
 
-
-
 const ModalBody = styled.div`
     display : flex;
     flex-direction : column;
@@ -109,7 +104,6 @@ const ModalBody = styled.div`
     transform : translate(-50%, -50%);
 
     min-width : 70%;
-
     `;
 
 const ContentWrap = styled.div`
@@ -121,6 +115,7 @@ const ContentWrap = styled.div`
     justify-contents : center;
     align-items : center;
     `;
+
 const Name = styled.p`
     padding : 10px;
     
