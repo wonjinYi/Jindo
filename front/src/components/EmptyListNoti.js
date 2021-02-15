@@ -1,5 +1,5 @@
 import React from 'react';
-import jindodog from '../img/jindodog.png';
+import jindodog from '../etc/jindodog.png';
 
 export default function EmptyListNoti() {
 

@@ -76,11 +76,7 @@ export default class App extends React.Component {
 
     updateBoardType = (type) => {
         this.setState({ boardType : type });
-        //console.log("boardtype : ", type);
-
-        this.setState({ 
-            isLoading: true 
-        }, this.getDo);
+        this.setState({ isLoading: true }, this.getDo);
     }
     
     findDoById = (modalId) => {
@@ -106,7 +102,7 @@ export default class App extends React.Component {
     // API request
     getDo = async () => {
         const { boardType } = this.state;
-        if( boardType === null ){
+        if( boardType === null){
             return 0;
         }
 
