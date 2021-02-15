@@ -12,7 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DoContainer from "./DoContainer";
 import EmptyListNoti from "./EmptyListNoti";
 
-export default function PrivateBoard({ setModalInfo, doList }) {
+export default function PrivateBoard({ setModalInfo, setDoListEmpty, doList }) {
 
     const [islogin, setIslogin] = useState(0);
     useEffect( () => {
@@ -31,7 +31,7 @@ export default function PrivateBoard({ setModalInfo, doList }) {
                         return (
                             <PrivateBoardWrap>
                                 <Tooltip title="Logout" placement="left">
-                                    <IconButton onClick={ () => { handleLogout(setIslogin) }}><ExitToAppIcon /></IconButton>
+                                    <IconButton onClick={ () => { handleLogout(setIslogin, setDoListEmpty) }}><ExitToAppIcon /></IconButton>
                                 </Tooltip>
                                 <DoContainer setModalInfo={setModalInfo} doList={doList} />
                             </PrivateBoardWrap>
@@ -60,8 +60,9 @@ async function updateIslogin() {
     return data;
 }
 
-function handleLogout(setIslogin) {
+function handleLogout(setIslogin, setDoListEmpty) {
     Axios.get('https://jindoback.wonj.in/logout', {withCredentials : true});
+    setDoListEmpty();
     setIslogin(false);
 }
 

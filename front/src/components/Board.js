@@ -8,7 +8,7 @@ import InfoBoard from "./InfoBoard";
 
 //import DoContainer from "./DoContainer";
 
-export default function Board({setModalInfo, doList, boardType}) {
+export default function Board({setModalInfo, setDoListEmpty, doList, boardType}) {
 
     return (
         <BoardWrap className="Board">
@@ -18,7 +18,7 @@ export default function Board({setModalInfo, doList, boardType}) {
                         return ( <PublicBoard setModalInfo={setModalInfo} doList={doList} /> );
                     }  
                     else if(boardType === "private"){
-                        return ( <PrivateBoard setModalInfo={setModalInfo} doList={doList} /> );
+                        return ( <PrivateBoard setModalInfo={setModalInfo} setDoListEmpty={setDoListEmpty} doList={doList} /> );
                     }
                     else if(boardType === "info"){
                         return ( <InfoBoard /> );

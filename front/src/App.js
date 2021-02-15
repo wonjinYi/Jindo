@@ -75,6 +75,7 @@ export default class App extends React.Component {
     }
 
     updateBoardType = (type) => {
+        this.setDoListEmpty();
         this.setState({ boardType : type });
         this.setState({ isLoading: true }, this.getDo);
     }
@@ -97,6 +98,10 @@ export default class App extends React.Component {
             };
             return targetDo;
         }
+    }
+
+    setDoListEmpty = () => {
+        this.setState({ doList : [] });
     }
 
     // API request
@@ -153,11 +158,11 @@ export default class App extends React.Component {
         await this.getDo();
     }
 
+    //
 
     componentDidMount() {
         this.getDo();
     }
-
 
     render() {
         const { isLoading, doList, boardType, modalData: { modalId, modalOpened } } = this.state;
@@ -170,7 +175,7 @@ export default class App extends React.Component {
 
                 <DoMaker updateFormData={this.updateFormData} boardType={boardType} />
 
-                <Board setModalInfo={this.openModal} doList={doList} boardType={boardType}/>
+                <Board setModalInfo={this.openModal} setDoListEmpty={this.setDoListEmpty} doList={doList} boardType={boardType}/>
                 
                 {
                     (() => {
