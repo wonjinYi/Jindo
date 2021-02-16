@@ -37,4 +37,6 @@ const BoardWrap = styled.div`
     border-radius : 5px;
 
     background : #ffefa0;
+
+    max-width : 90%;
     `;

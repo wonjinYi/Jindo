@@ -104,6 +104,10 @@ const DoMakerWrap = styled.div`
   border-radius : 5px;
 
   background : #ffefa0;
+
+  @media(max-width : 768px){
+    width : 90%;
+  }
   `;
 
 const TextValidator = styled.p`

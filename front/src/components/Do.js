@@ -36,6 +36,11 @@ export default class Do extends React.Component {
 
 const DoWrap = styled.div`
     display : flex;
+    @media(max-width : 768px){
+        flex-direction : column;
+        margin-bottom : 2rem;
+
+    }
     `;
 
 const DoName = withStyles({

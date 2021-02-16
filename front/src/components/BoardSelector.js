@@ -56,6 +56,10 @@ function initBoardType () {
 // style
 const BoardSelectorWrap = styled.div`
   margin-bottom : 30px;
+
+  @media(max-width : 768px){
+    width : 95%;
+  }
   `;
 
 const SelectTabs = withStyles({
